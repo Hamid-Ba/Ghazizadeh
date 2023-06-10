@@ -30,9 +30,9 @@ class ContactUsView(generics.CreateAPIView):
     serializer_class = ContactUsSerializer
 
 
-class RobotsView(View):
-    """Robots View"""
+# class RobotsView(View):
+#     """Robots View"""
 
-    def get(self, request):
-        robot = get_object_or_404(Robots, pk=1)
-        return HttpResponse(robot.text, content_type="text/plain")
+#     def get(self, request):
+#         robot = get_object_or_404(Robots, pk=1)
+#         return HttpResponse(robot.text, content_type="text/plain")
