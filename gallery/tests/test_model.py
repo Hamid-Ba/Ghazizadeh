@@ -5,6 +5,7 @@ from django.test import TestCase
 
 from gallery import models
 
+
 class GalleryTest(TestCase):
     """Test Gallery Model"""
 
@@ -17,4 +18,4 @@ class GalleryTest(TestCase):
         for key, value in gallery.items():
             self.assertEqual(getattr(created_gallery, key), value)
 
-        self.assertEqual(created_gallery.cafe, self.cafe)
+        self.assertEqual(created_gallery.title, gallery["title"])

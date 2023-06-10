@@ -40,7 +40,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     phone = models.CharField(max_length=11, unique=True, validators=[phone_validator])
     fullName = models.CharField(max_length=255, blank=True)
-    phone_code = models.CharField(max_length=11, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -52,7 +51,3 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.fullName:
             return self.fullName
         return self.phone
-
-    def set_phone_code(self, phone_code):
-        self.phone_code = phone_code
-        self.save()

@@ -45,11 +45,10 @@ INSTALLED_APPS = [
     "corsheaders",
     "djmoney",
     "taggit",
-    
     "account",
     "blog",
     "siteinfo",
-    "gallery"
+    "gallery",
 ]
 
 MIDDLEWARE = [
@@ -163,3 +162,5 @@ REST_FRAMEWORK = {
 SPECTACULAR_SETTINGS = {
     "COMPONENT_SPLIT_REQUEST": True,
 }
+
+KAVENEGAR_API_KEY = ""

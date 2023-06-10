@@ -15,5 +15,7 @@ urlpatterns = [
     path("", include(router.urls)),
     path("<str:slug>/", views.BlogDetailView.as_view(), name="blog_detail"),
     path("blogs", views.BlogsView.as_view(), name="blogs-list"),
-    path("latest-blogs-list", views.LatestBlogsView.as_view(), name="latest-blogs-list"),
+    path(
+        "latest-blogs-list", views.LatestBlogsView.as_view(), name="latest-blogs-list"
+    ),
 ]

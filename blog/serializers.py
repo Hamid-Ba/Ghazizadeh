@@ -10,15 +10,19 @@ from gallery import serializers as gallery_serializers
 
 class CategorySerializer(serializers.ModelSerializer):
     """Category Serializer"""
+
     class Meta:
         model = models.Category
         fields = "__all__"
-        
+
+
 class SpecificationSerializer(serializers.ModelSerializer):
     """Specification Serializer"""
+
     class Meta:
         model = models.Specification
         fields = "__all__"
+
 
 class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Blog Serializer"""
@@ -32,12 +36,13 @@ class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
         model = models.Blog
         fields = "__all__"
 
+
 class LatestBlogSerializer(serializers.ModelSerializer):
     """Latest Blog Serializer"""
-    
+
     category = CategorySerializer(many=False)
     image = gallery_serializers.GallerySerializer(many=False)
-    
+
     class Meta:
         model = models.Blog
-        fields = ["title", "slug","category","image"]
+        fields = ["title", "slug", "category", "image"]

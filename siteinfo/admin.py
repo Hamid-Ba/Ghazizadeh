@@ -3,35 +3,21 @@ site info module admin models
 """
 from django.contrib import admin
 
-from siteinfo.models import AboutUs, ContactUs, Robots
+from siteinfo import models
 
 
 class AboutUsAdmin(admin.ModelAdmin):
     """About Us Admin Model"""
 
-    list_display = ["id", "phones", "address"]
-    list_display_links = ["id", "phones", "address"]
+    list_display = ["id", "title"]
+    list_display_links = ["id", "title"]
 
     fieldsets = (
         (
-            "Contact Info",
+            "Main Info",
             {
                 "classes": ("collapse",),
-                "fields": ("phones", "emails"),
-            },
-        ),
-        (
-            "Address Info",
-            {
-                "classes": ("collapse",),
-                "fields": ("address",),
-            },
-        ),
-        (
-            "Extra Info",
-            {
-                "classes": ("collapse",),
-                "fields": ("text",),
+                "fields": ("title", "text"),
             },
         ),
     )
@@ -40,18 +26,19 @@ class AboutUsAdmin(admin.ModelAdmin):
 class ContactUsAdmin(admin.ModelAdmin):
     """Contact Us Admin Model"""
 
-    list_display = ["id", "full_name", "phone"]
-    list_display_links = ["id", "full_name", "phone"]
-    search_fields = ["full_name", "phone"]
+    list_display = ["id", "title"]
+    list_display_links = ["id", "title"]
+
+    fieldsets = (
+        (
+            "Main Info",
+            {
+                "classes": ("collapse",),
+                "fields": ("title", "text"),
+            },
+        ),
+    )
 
 
-class RobotsAdmin(admin.ModelAdmin):
-    """Robots Admin Model"""
-
-    list_display = ["id", "name"]
-    list_display_links = ["id", "name"]
-
-
-admin.site.register(AboutUs, AboutUsAdmin)
-admin.site.register(ContactUs, ContactUsAdmin)
-admin.site.register(Robots, RobotsAdmin)
+admin.site.register(models.AboutUs, AboutUsAdmin)
+admin.site.register(models.ContactUs, ContactUsAdmin)

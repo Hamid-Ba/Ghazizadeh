@@ -54,15 +54,6 @@ class AuthenticationSerializer(serializers.Serializer):
         },
     )
 
-    phone_code = serializers.CharField(
-        max_length=11,
-        required=True,
-        error_messages={
-            "blank": "کد را وارد نمایید",
-            "required": "کد را وارد نمایید",
-        },
-    )
-
     def validate(self, attrs):
         phone = attrs.get("phone")
         if not phone.isdigit():
@@ -72,22 +63,19 @@ class AuthenticationSerializer(serializers.Serializer):
     def create(self, validated_data):
         """Login Or Register User"""
         phone = validated_data.get("phone")
-        phone_code = validated_data.get("phone_code")
         otp = str(randint(100000, 999999))
 
         user, created = get_user_model().objects.get_or_create(phone=phone)
         user.set_password(otp)
-        user.set_phone_code(phone_code)
-        
+
         # For Test
         if settings.DEBUG:
             user.fullName = otp
-            user.save()
-
+        user.save()
         # Send Otp Code
         if not settings.DEBUG:
             kavenegar = KavenegarSMS()
-            kavenegar.otp(user.phone, otp, phone_code)
+            kavenegar.otp(user.phone, otp)
             kavenegar.send()
 
         return user

@@ -4,6 +4,7 @@ from uuid import uuid4
 
 # Create your models here.
 
+
 def gallery_image_file_path(instance, filename):
     """Generate file path for category image"""
     ext = os.path.splitext(filename)[1]

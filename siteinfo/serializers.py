@@ -14,7 +14,6 @@ class AboutUsSerializer(serializers.ModelSerializer):
 
         model = AboutUs
         fields = "__all__"
-        read_only_fields = ["id", "phones", "address", "emails", "text"]
 
 
 class ContactUsSerializer(serializers.ModelSerializer):
@@ -25,4 +24,3 @@ class ContactUsSerializer(serializers.ModelSerializer):
 
         model = ContactUs
         fields = "__all__"
-        read_only_fields = ["id"]
