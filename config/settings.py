@@ -45,6 +45,11 @@ INSTALLED_APPS = [
     "corsheaders",
     "djmoney",
     "taggit",
+    
+    "account",
+    "blog",
+    "siteinfo",
+    "gallery"
 ]
 
 MIDDLEWARE = [
