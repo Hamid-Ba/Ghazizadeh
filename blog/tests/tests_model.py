@@ -3,7 +3,6 @@ Test Blog Module Models
 """
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from datetime import date
 
 from blog import models
 
@@ -12,29 +11,130 @@ def create_user(phone, password):
     """Helper Function for creating a user"""
     return get_user_model().objects.create_user(phone=phone, password=password)
 
+class CategoryModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        # Set up non-modified objects used by all test methods
+        models.Category.objects.create(title='TestCategory', image_alt='Test Alt', image_title='Test Title')
 
-class BlogModel(TestCase):
-    """Test Blog Model"""
+    def test_title_label(self):
+        category = models.Category.objects.get(id=1)
+        field_label = category._meta.get_field('title').verbose_name
+        self.assertEquals(field_label, 'title')
 
-    def test_blog_model_should_work_properly(self):
-        """Test Blog Model"""
-        user = create_user("09151498721", "123456")
-        payload = {
-            "title": "Test Blog Model",
-            "slug": "Test-Blog-Model",
-            "cafe_id": 2,
-            "short_desc": "short description",
-            "desc": "Test Blog Model",
-            "image": "blog.png",
-            "image_alt": "blog",
-            "image_title": "blog",
-            "is_cafe": False,
-            "publish_date": date(2022, 6, 12),
-            "tags": ["blog", "cafe", "food"],
-            "user": user,
-        }
+    def test_image_alt_max_length(self):
+        category = models.Category.objects.get(id=1)
+        max_length = category._meta.get_field('image_alt').max_length
+        self.assertEquals(max_length, 72)
 
-        blog = models.Blog.objects.create(**payload)
+    def test_object_name_is_title(self):
+        category = models.Category.objects.get(id=1)
+        expected_object_name = f'{category.title}'
+        self.assertEquals(expected_object_name, str(category))
 
-        for key, value in payload.items():
-            self.assertEqual(getattr(blog, key), value)
+    def test_sub_category_can_be_null(self):
+        category = models.Category.objects.get(id=1)
+        sub_category = category.sub_category
+        self.assertIsNone(sub_category)
+
+    def test_image_related_name(self):
+        category = models.Category.objects.get(id=1)
+        related_name = category.image.field.related_query_name()
+        self.assertEquals(related_name, 'blog_categories')
+
+class BlogModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        models.Category.objects.create(title='TestCategory')
+        # Set up non-modified objects used by all test methods
+        models.Blog.objects.create(
+            title='TestBlog',
+            slug='test-blog',
+            short_desc='Short description',
+            desc='Long description',
+            image_alt='Test Alt',
+            image_title='Test Title',
+            category=models.Category.objects.get(id=1),
+        )
+
+    def test_title_label(self):
+        blog = models.Blog.objects.get(id=1)
+        field_label = blog._meta.get_field('title').verbose_name
+        self.assertEquals(field_label, 'title')
+
+    def test_slug_max_length(self):
+        blog = models.Blog.objects.get(id=1)
+        max_length = blog._meta.get_field('slug').max_length
+        self.assertEquals(max_length, 170)
+
+    def test_object_name_is_title(self):
+        blog = models.Blog.objects.get(id=1)
+        expected_object_name = f'{blog.title}'
+        self.assertEquals(expected_object_name, str(blog))
+
+    def test_short_desc_blank(self):
+        blog = model.Blog.objects.get(id=1)
+        short_desc = blog._meta.get_field('short_desc').blank
+        self.assertFalse(short_desc)
+
+    def test_desc_null(self):
+        blog = models.Blog.objects.get(id=1)
+        desc = blog._meta.get_field('desc').null
+        self.assertTrue(desc)
+
+    def test_image_alt_max_length(self):
+        blog = models.Blog.objects.get(id=1)
+        max_length = blog._meta.get_field('image_alt').max_length
+        self.assertEquals(max_length, 72)
+
+    def test_publish_date_default(self):
+        blog = models.Blog.objects.get(id=1)
+        publish_date = blog.publish_date
+        self.assertIsNotNone(publish_date)
+
+    def test_category_related_name(self):
+        blog = models.Blog.objects.get(id=1)
+        related_name = blog.category.field.related_query_name()
+        self.assertEquals(related_name, 'blogs')
+
+    def test_image_related_name(self):
+        blog = models.Blog.objects.get(id=1)
+        related_name = blog.image.field.related_query_name()
+        self.assertEquals(related_name, 'blogs')
+
+class SpecificationModelTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        models.Blog.objects.create(title='TestBlog', slug='test-blog')
+
+        # Set up non-modified objects used by all test methods
+        models.Specification.objects.create(
+            key='TestKey',
+            value='TestValue',
+            blog=models.Blog.objects.get(id=1),
+        )
+
+    def test_type_default_value(self):
+        spec = models.Specification.objects.get(id=1)
+        default_type = spec.type
+        self.assertEquals(default_type, 'TS')
+
+    def test_key_max_length(self):
+        spec = models.Specification.objects.get(id=1)
+        max_length = spec._meta.get_field('key').max_length
+        self.assertEquals(max_length, 125)
+
+    def test_value_blank_false(self):
+        spec = models.Specification.objects.get(id=1)
+        blank = spec._meta.get_field('value').blank
+        self.assertFalse(blank)
+
+    def test_blog_related_name(self):
+        spec = models.Specification.objects.get(id=1)
+        related_name = spec.blog.field.related_query_name()
+        self.assertEquals(related_name, 'specs')
+
+    def test_object_name(self):
+        spec = models.Specification.objects.get(id=1)
+        expected_object_name = f'{spec.blog.title}-{spec.key}'
+        self.assertEquals(expected_object_name, str(spec))

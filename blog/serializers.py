@@ -5,102 +5,39 @@ from rest_framework import serializers
 from taggit.serializers import TagListSerializerField, TaggitSerializer
 
 from blog import models
-from cafe.models import Bartender, Cafe
+from gallery import serializers as gallery_serializers
 
 
-class CreateBlogSerializer(TaggitSerializer, serializers.ModelSerializer):
-    """Create Blog Serializer"""
-
-    tags = TagListSerializerField()
-
+class CategorySerializer(serializers.ModelSerializer):
+    """Category Serializer"""
     class Meta:
-        model = models.Blog
-        fields = [
-            "cafe_id",
-            "title",
-            "slug",
-            "short_desc",
-            "desc",
-            "image",
-            "image_alt",
-            "image_title",
-            "publish_date",
-            "tags",
-        ]
-
-    def validate(self, attrs):
-        cafe_id = attrs.get("cafe_id")
-        user = self.context.get("request").user
-
-        try:
-            if user.cafe.id != cafe_id:
-                print(user.cafe.id)
-                msg = "شناسه کافه اشتباه هست"
-                raise serializers.ValidationError(msg)
-        except:
-            cafe = Cafe.objects.filter(id=cafe_id).first()
-            is_bartender = Bartender.objects.filter(
-                user=user, cafe=cafe, is_active=True
-            ).exists()
-            if not is_bartender:
-                msg = "شما قادر به ثبت بلاگ نمی باشید"
-                raise serializers.ValidationError(msg)
-
-        attrs["is_cafe"] = True
-
-        return attrs
-
-
-class UpdateBlogSerializer(TaggitSerializer, serializers.ModelSerializer):
-    """Update Blog Serializer"""
-
-    tags = TagListSerializerField()
-
+        model = models.Category
+        fields = "__all__"
+        
+class SpecificationSerializer(serializers.ModelSerializer):
+    """Specification Serializer"""
     class Meta:
-        model = models.Blog
-        fields = [
-            "title",
-            "slug",
-            "short_desc",
-            "desc",
-            "image",
-            "image_alt",
-            "image_title",
-            "publish_date",
-            "tags",
-        ]
-
-
-class BlogSerializer(CreateBlogSerializer):
-    """Blog Serializer"""
-
-    class Meta(CreateBlogSerializer.Meta):
+        model = models.Specification
         fields = "__all__"
 
-    def to_representation(self, instance):
-        datas = super().to_representation(instance)
-        try:
-            cafe = Cafe.objects.filter(id=instance.cafe_id).first()
-            datas["cafe"] = {
-                "title": cafe.persian_title,
-                "code": cafe.code,
-                "owner": cafe.owner.fullName,
-            }
-        except:
-            None
-        return datas
+class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
+    """Blog Serializer"""
 
+    tags = TagListSerializerField()
+    category = CategorySerializer(many=False)
+    specs = SpecificationSerializer(many=True)
+    image = gallery_serializers.GallerySerializer(many=False)
 
-class BlogListSerializer(UpdateBlogSerializer):
-    """Blog List Serializer"""
-
-    class Meta(UpdateBlogSerializer.Meta):
-        """Meta Class"""
-
+    class Meta:
+        model = models.Blog
+        fields = "__all__"
 
 class LatestBlogSerializer(serializers.ModelSerializer):
     """Latest Blog Serializer"""
-
+    
+    category = CategorySerializer(many=False)
+    image = gallery_serializers.GallerySerializer(many=False)
+    
     class Meta:
         model = models.Blog
-        fields = ["title", "slug"]
+        fields = ["title", "slug","category","image"]
