@@ -10,7 +10,7 @@ def brand_logo_file_path(instance, filename):
     ext = os.path.splitext(filename)[1]
     filename = f"{uuid4()}.{ext}"
 
-    return os.path.join("uploads", "category", filename)
+    return os.path.join("uploads", "banner", filename)
 
 
 class Brand(models.Model):
