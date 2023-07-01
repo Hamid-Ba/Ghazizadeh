@@ -24,20 +24,20 @@ def create_city(city, province_id):
 
 class AddressModel(TestCase):
     """Address Model Test"""
-    
+
     def test_address_model(self):
         """Test Address Model"""
         user = create_user("09151498721", "123456")
         province = create_province("tehran")
         city = create_city("tehran", province)
-        
+
         payload = {
-            "desc":'Test Address',
-            "street":'Test Street',
-            "postal_code":'12345',
-            "user":user,
-            "province":province,
-            "city":city
+            "desc": "Test Address",
+            "street": "Test Street",
+            "postal_code": "12345",
+            "user": user,
+            "province": province,
+            "city": city,
         }
         the_model = models.Address.objects.create(**payload)
 

@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from province import models as province_model
 
+
 class Address(models.Model):
     """Address Model"""
 
