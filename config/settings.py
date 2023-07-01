@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     "siteinfo",
     "gallery",
     "brand",
-    "province"
+    "province",
+    "address"
 ]
 
 MIDDLEWARE = [

@@ -42,8 +42,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone = models.CharField(max_length=11, unique=True, validators=[phone_validator])
     first_name = models.CharField(max_length=72, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=255, validators=[validate_email] , blank=True)
-    national_code = models.CharField(max_length=10,blank=True,null=True)
+    email = models.EmailField(max_length=255, validators=[validate_email], blank=True)
+    national_code = models.CharField(max_length=10, blank=True, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 

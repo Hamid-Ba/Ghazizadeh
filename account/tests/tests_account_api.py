@@ -76,7 +76,7 @@ class PrivateTest(TestCase):
 
     def test_update_user_profile(self):
         """Test Update User Profile"""
-        payload = {"first_name": "Hamd","last_name":"Balalzadeh"}
+        payload = {"first_name": "Hamd", "last_name": "Balalzadeh"}
 
         res = self.client.patch(ME_USER_URL, payload)
 

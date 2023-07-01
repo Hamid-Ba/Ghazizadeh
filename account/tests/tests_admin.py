@@ -17,7 +17,7 @@ class AdminUserTest(TestCase):
         self.client.force_login(self.admin)
 
         self.user = get_user_model().objects.create_user(
-            phone="09151498712", first_name="Test User" , last_name="Test User"
+            phone="09151498712", first_name="Test User", last_name="Test User"
         )
 
     def test_access_to_user_list(self):

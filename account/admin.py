@@ -10,17 +10,29 @@ from account.models import User
 
 
 class UserAdmin(BaseAdminModel):
-    list_display = ["first_name","last_name", "phone", "is_active", "last_login"]
+    list_display = ["first_name", "last_name", "phone", "is_active", "last_login"]
     list_editable = ["is_active"]
     readonly_fields = ["last_login"]
-    list_display_links = ["first_name","last_name", "phone"]
+    list_display_links = ["first_name", "last_name", "phone"]
     ordering = ["id"]
 
     list_filter = ["is_active", "is_staff"]
     search_fields = ["phone"]
 
     fieldsets = (
-        ("General Info", {"fields": ("first_name","last_name", "phone","email","national_code", "password")}),
+        (
+            "General Info",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "phone",
+                    "email",
+                    "national_code",
+                    "password",
+                )
+            },
+        ),
         (
             "Permissions",
             {
@@ -37,7 +49,20 @@ class UserAdmin(BaseAdminModel):
     )
 
     add_fieldsets = (
-        ("General Info", {"fields": ("first_name","last_name", "phone","email","national_code", "password1", "password2")}),
+        (
+            "General Info",
+            {
+                "fields": (
+                    "first_name",
+                    "last_name",
+                    "phone",
+                    "email",
+                    "national_code",
+                    "password1",
+                    "password2",
+                )
+            },
+        ),
         (
             "Permissions",
             {
