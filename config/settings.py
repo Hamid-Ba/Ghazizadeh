@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "blog",
     "siteinfo",
     "gallery",
+    "brand",
 ]
 
 MIDDLEWARE = [
