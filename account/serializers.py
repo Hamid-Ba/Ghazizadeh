@@ -19,8 +19,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = get_user_model()
         fields = [
             "id",
-            "fullName",
+            "first_name",
+            "last_name",
             "phone",
+            "email",
+            "national_code",
             "is_active",
             "is_staff",
             "is_superuser",
@@ -70,7 +73,7 @@ class AuthenticationSerializer(serializers.Serializer):
 
         # For Test
         if settings.DEBUG:
-            user.fullName = otp
+            user.first_name = otp
         user.save()
         # Send Otp Code
         if not settings.DEBUG:

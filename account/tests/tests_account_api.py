@@ -76,13 +76,14 @@ class PrivateTest(TestCase):
 
     def test_update_user_profile(self):
         """Test Update User Profile"""
-        payload = {"fullName": "NewHamid"}
+        payload = {"first_name": "Hamd","last_name":"Balalzadeh"}
 
         res = self.client.patch(ME_USER_URL, payload)
 
         self.user.refresh_from_db()
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertEqual(self.user.fullName, payload["fullName"])
+        self.assertEqual(self.user.first_name, payload["first_name"])
+        self.assertEqual(self.user.last_name, payload["last_name"])
 
     def test_logout_user(self):
         """Test Logout User"""

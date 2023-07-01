@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     BaseUserManager,
 )
 
+from django.core.validators import validate_email
 from account.vaidators import phone_validator
 
 
@@ -39,7 +40,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     """Custom User Model"""
 
     phone = models.CharField(max_length=11, unique=True, validators=[phone_validator])
-    fullName = models.CharField(max_length=255, blank=True)
+    first_name = models.CharField(max_length=72, blank=True)
+    last_name = models.CharField(max_length=100, blank=True)
+    email = models.EmailField(max_length=255, validators=[validate_email] , blank=True)
+    national_code = models.CharField(max_length=10,blank=True,null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
@@ -48,6 +52,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def __str__(self):
-        if self.fullName:
-            return self.fullName
+        if self.first_name and self.last_name:
+            return f"{self.first_name} {self.last_login}"
         return self.phone
