@@ -3,11 +3,11 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from datetime import datetime, timedelta
 
-from blog import models, views
+from blog import models
 
 
 def create_category(title):
-    return models.Category.objects.create(title=title)
+    return models.BlogCategory.objects.create(title=title)
 
 
 class BlogTestCase(APITestCase):

@@ -27,7 +27,7 @@ def blog_category_image_file_path(instance, filename):
     return os.path.join("uploads", "blogs", "category", filename)
 
 
-class Category(models.Model):
+class BlogCategory(models.Model):
     """Blog Category Model"""
 
     title = models.CharField(max_length=255)
@@ -55,7 +55,7 @@ class Category(models.Model):
         return self.title
 
     class Meta:
-        verbose_name_plural = "Categories"
+        verbose_name_plural = "Blog Categories"
 
 
 class Blog(models.Model):
@@ -74,7 +74,7 @@ class Blog(models.Model):
 
     tags = TaggableManager(blank=True)
     category = models.ForeignKey(
-        Category, on_delete=models.CASCADE, related_name="blogs"
+        BlogCategory, on_delete=models.CASCADE, related_name="blogs"
     )
     image = models.ForeignKey(
         gallery_models.Gallery,

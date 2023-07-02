@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "brand",
     "province",
     "address",
+    "store",
 ]
 
 MIDDLEWARE = [

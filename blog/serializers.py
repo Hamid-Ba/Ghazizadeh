@@ -8,11 +8,11 @@ from blog import models
 from gallery import serializers as gallery_serializers
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class BlogCategorySerializer(serializers.ModelSerializer):
     """Category Serializer"""
 
     class Meta:
-        model = models.Category
+        model = models.BlogCategory
         fields = "__all__"
 
 
@@ -28,7 +28,7 @@ class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Blog Serializer"""
 
     tags = TagListSerializerField()
-    category = CategorySerializer(many=False)
+    category = BlogCategorySerializer(many=False)
     specs = SpecificationSerializer(many=True)
     image = gallery_serializers.GallerySerializer(many=False)
 
@@ -40,7 +40,7 @@ class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
 class LatestBlogSerializer(serializers.ModelSerializer):
     """Latest Blog Serializer"""
 
-    category = CategorySerializer(many=False)
+    category = BlogCategorySerializer(many=False)
     image = gallery_serializers.GallerySerializer(many=False)
 
     class Meta:

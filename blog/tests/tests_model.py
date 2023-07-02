@@ -8,7 +8,7 @@ from blog import models
 
 
 def create_category(title):
-    return models.Category.objects.create(title=title)
+    return models.BlogCategory.objects.create(title=title)
 
 
 class CategoryModelTest(TestCase):
@@ -17,22 +17,22 @@ class CategoryModelTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         # Set up non-modified objects used by all test methods
-        models.Category.objects.create(
+        models.BlogCategory.objects.create(
             title="TestCategory", image_alt="Test Alt", image_title="Test Title"
         )
 
     def test_title_label(self):
-        category = models.Category.objects.filter(title="TestCategory").first()
+        category = models.BlogCategory.objects.filter(title="TestCategory").first()
         field_label = category._meta.get_field("title").verbose_name
         self.assertEquals(field_label, "title")
 
     def test_image_alt_max_length(self):
-        category = models.Category.objects.filter(title="TestCategory").first()
+        category = models.BlogCategory.objects.filter(title="TestCategory").first()
         max_length = category._meta.get_field("image_alt").max_length
         self.assertEquals(max_length, 72)
 
     def test_object_name_is_title(self):
-        category = models.Category.objects.filter(title="TestCategory").first()
+        category = models.BlogCategory.objects.filter(title="TestCategory").first()
         expected_object_name = f"{category.title}"
         self.assertEquals(expected_object_name, str(category))
 
@@ -42,7 +42,7 @@ class BlogModelTest(TestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cat = models.Category.objects.create(title="TestCategory")
+        cat = models.BlogCategory.objects.create(title="TestCategory")
         # Set up non-modified objects used by all test methods
         models.Blog.objects.create(
             title="TestBlog",

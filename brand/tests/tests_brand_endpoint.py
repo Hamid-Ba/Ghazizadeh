@@ -3,7 +3,7 @@ from rest_framework import status
 from rest_framework.test import APIClient
 from django.urls import reverse
 
-from brand import models, serializers
+from brand import models
 
 BRAND_URL = reverse("brand:brands")
 

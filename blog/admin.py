@@ -3,7 +3,7 @@ from blog import models
 
 
 class SubCategoryInline(admin.StackedInline):
-    model = models.Category
+    model = models.BlogCategory
     extra = 0
     verbose_name_plural = "Sub Categories"
 
@@ -94,5 +94,5 @@ class SpecificationAdmin(admin.ModelAdmin):
 
 
 admin.site.register(models.Blog, BlogAdmin)
-admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.BlogCategory, CategoryAdmin)
 admin.site.register(models.Specification, SpecificationAdmin)
