@@ -1,6 +1,10 @@
 import os
 from uuid import uuid4
 from django.db import models
+from djmoney.models.fields import MoneyField
+
+from brand import models as brand_models
+from gallery import models as gallery_models
 
 # Create your models here.
 
@@ -33,3 +37,45 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+
+
+class Product(models.Model):
+    """Product Model"""
+
+    title = models.CharField(max_length=125, null=False, blank=False)
+    price = MoneyField(
+        max_digits=12, decimal_places=0, default_currency="IRR", null=False
+    )
+    desc = models.TextField()
+    count = models.IntegerField(default=0)
+    order_count = models.IntegerField(default=0)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    gallery = models.ManyToManyField(gallery_models.Gallery, related_name="products")
+
+    brand = models.ForeignKey(
+        brand_models.Brand, on_delete=models.CASCADE, related_name="products"
+    )
+
+    category = models.ForeignKey(
+        Category, on_delete=models.CASCADE, related_name="products"
+    )
+
+    def __str__(self):
+        return self.title
+
+    def ordered(self, count):
+        self.order_count += count
+        self.save()
+
+
+class Specifications(models.Model):
+    """Specifications Model"""
+
+    key = models.CharField(max_length=125, null=False, blank=False)
+    value = models.CharField(max_length=225, null=False, blank=False)
+
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="specs")
+
+    def __str__(self):
+        return f"{self.product.title}-{self.key}"
