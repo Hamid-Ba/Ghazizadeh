@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 from django.db import models
+from ckeditor.fields import RichTextField
 from djmoney.models.fields import MoneyField
 
 from brand import models as brand_models
@@ -46,7 +47,7 @@ class Product(models.Model):
     price = MoneyField(
         max_digits=12, decimal_places=0, default_currency="IRR", null=False
     )
-    desc = models.TextField()
+    desc = RichTextField(blank=True, null=True)
     count = models.IntegerField(default=0)
     order_count = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
