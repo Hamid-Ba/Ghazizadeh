@@ -10,6 +10,11 @@ router.register("products", views.ProductViewSet)
 
 urlpatterns = [
     path("", include(router.urls)),
-    path("best_selling_products", views.BestSellingProducts.as_view(), name="best_selling_products"),
+    path(
+        "best_selling_products",
+        views.BestSellingProductsAPI.as_view(),
+        name="best_selling_products",
+    ),
+    path("search_products", views.SearchProductsAPI.as_view(), name="search_products"),
     path("categories", views.CategoryApiView.as_view(), name="categories"),
 ]

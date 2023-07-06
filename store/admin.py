@@ -6,7 +6,8 @@ from store import models
 class SpecificationInline(admin.TabularInline):
     model = models.Specifications
     extra = 1
-    
+
+
 class ProductAdmin(admin.ModelAdmin):
     # list_display = ("title", "category", "publish_date")
     # list_filter = ("category", "tags")
@@ -48,5 +49,6 @@ class ProductAdmin(admin.ModelAdmin):
 
     #     return queryset
 
+
 admin.site.register(models.Category)
-admin.site.register(models.Product,ProductAdmin)
+admin.site.register(models.Product, ProductAdmin)
