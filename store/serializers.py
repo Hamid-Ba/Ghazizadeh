@@ -52,3 +52,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
         model = models.Product
         fields = "__all__"
+        
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        relational_products = models.Product.objects.get_relational_products_by_category(instance.category.id)
+        if len(relational_products) :
+            rep["relational_products"] = relational_products
+        else:
+            rep["relational_products"] = []
+        return rep

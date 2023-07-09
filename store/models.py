@@ -40,6 +40,12 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
+class ProductManager(models.Manager):
+    """Product Manager"""
+    def get_relational_products_by_category(self,cat_id):
+        """return products in same category"""
+        return self.filter(category=cat_id,count__gte=3).order_by("-order_count").values()
+
 class Product(models.Model):
     """Product Model"""
 
@@ -68,6 +74,8 @@ class Product(models.Model):
     def ordered(self, count):
         self.order_count += count
         self.save()
+        
+    objects = ProductManager()
 
 
 class Specifications(models.Model):
