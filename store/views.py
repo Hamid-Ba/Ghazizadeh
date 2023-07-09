@@ -1,9 +1,11 @@
 from rest_framework import generics, mixins, viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 from config import pagination
 from store import models, serializers
 from store.services import product_services
+from store.filters import PriceRangeFilter
 
 product_service = product_services.ProductServices()
 
@@ -46,5 +48,8 @@ class SearchProductsAPI(generics.ListAPIView):
     queryset = product_service.get_available_products().order_by("-created_date")
     serializer_class = serializers.ProductListSerializer
     pagination_class = pagination.StandardPagination
-    filter_backends = [filters.SearchFilter]
+    filter_class = PriceRangeFilter
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filterset_fields = ["brand", "category"]
     search_fields = ["title", "category__title"]
+    ordering_fields = ["created_date", "order_count", "price"]
