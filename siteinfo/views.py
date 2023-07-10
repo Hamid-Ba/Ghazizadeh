@@ -17,7 +17,7 @@ class AboutUsView(generics.RetrieveAPIView):
     def get(self, request):
         about_us = models.AboutUs.objects.first()
         serializer = serializers.AboutUsSerializer(about_us)
-        return Response(serializer.data)
+        return Response(serializer.data)   
 
 
 class ContactUsView(generics.ListAPIView):
