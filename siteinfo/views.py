@@ -27,17 +27,27 @@ class ContactUsView(generics.ListAPIView):
     serializer_class = serializers.ContactUsSerializer
 
 
-class HomeHeaderView(generics.ListAPIView):
+class HomeHeaderView(generics.RetrieveAPIView):
     """Contact Us View"""
 
-    queryset = models.HomeHeader.objects.filter(is_active=True)
+    queryset = models.HomeHeader.objects.all()
     serializer_class = serializers.HomeHeaderSerializer
+    
+    def get(self, request):
+        home_header = models.HomeHeader.objects.filter(is_active=True)
+        serializer = serializers.HomeHeaderSerializer(home_header)
+        return Response(serializer.data)   
 
-class FooterView(generics.ListAPIView):
+class FooterView(generics.RetrieveAPIView):
     """Contact Us View"""
 
-    queryset = models.Footer.objects.filter(is_active=True)
+    queryset = models.Footer.objects.all()
     serializer_class = serializers.FooterSerializer    
+    
+    def get(self, request):
+        footer = models.HomeHeader.objects.filter(is_active=True)
+        serializer = serializers.FooterSerializer(footer)
+        return Response(serializer.data)   
 
 class SliderAndBannerView(generics.ListAPIView):
     """Contact Us View"""
