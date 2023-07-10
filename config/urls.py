@@ -29,7 +29,7 @@ urlpatterns = [
     ),
     path("api/account/", include("account.urls")),
     path("api/blog/", include("blog.urls")),
-   #path("api/siteinfo/", include("siteinfo.urls")),
+    path("api/siteinfo/", include("siteinfo.urls")),
     path("api/brand/", include("brand.urls")),
     path("api/address/", include("address.urls")),
     path("api/store/", include("store.urls")),
