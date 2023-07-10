@@ -34,7 +34,7 @@ class HomeHeaderView(generics.RetrieveAPIView):
     serializer_class = serializers.HomeHeaderSerializer
     
     def get(self, request):
-        home_header = models.HomeHeader.objects.filter(is_active=True)
+        home_header = models.HomeHeader.objects.filter(is_active=True).first()
         serializer = serializers.HomeHeaderSerializer(home_header)
         return Response(serializer.data)   
 
@@ -45,7 +45,7 @@ class FooterView(generics.RetrieveAPIView):
     serializer_class = serializers.FooterSerializer    
     
     def get(self, request):
-        footer = models.HomeHeader.objects.filter(is_active=True)
+        footer = models.Footer.objects.filter(is_active=True).first()
         serializer = serializers.FooterSerializer(footer)
         return Response(serializer.data)   
 
