@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     "taggit",
     "account",
     "blog",
-    "siteinfo",
+    #"siteinfo",
     "gallery",
     "brand",
     "province",
