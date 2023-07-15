@@ -8,6 +8,7 @@ class SubCategoryInline(admin.StackedInline):
     extra = 0
     verbose_name_plural = "Sub Categories"
 
+
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ("title", "order", "parent")
     list_filter = ("parent",)
@@ -32,9 +33,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
         return queryset
 
+
 class SpecificationInline(admin.TabularInline):
     model = models.Specifications
     extra = 1
+
 
 class ProductAdmin(admin.ModelAdmin):
     # list_display = ("title", "category", "publish_date")
@@ -78,5 +81,6 @@ class ProductAdmin(admin.ModelAdmin):
     #     return queryset
 
 
-admin.site.register(models.Category , CategoryAdmin)
+admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
+admin.site.register(models.Comment)

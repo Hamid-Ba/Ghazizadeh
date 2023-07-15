@@ -15,6 +15,20 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CommentSerializer(serializers.ModelSerializer):
+    """Comment Serializer"""
+
+    class Meta:
+        """Meta Class"""
+
+        model = models.Comment
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        if instance.is_active:
+            return super().to_representation(instance)
+
+
 class SpecificationsSerializer(serializers.ModelSerializer):
     """Specifications Serializer"""
 
@@ -46,17 +60,22 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = brand_serial.BrandSerializer(many=False)
     gallery = gallery_serial.GallerySerializer(many=True)
     specs = SpecificationsSerializer(many=True)
+    comments = CommentSerializer(many=True)
 
     class Meta:
         """Meta Class"""
 
         model = models.Product
         fields = "__all__"
-        
+
     def to_representation(self, instance):
         rep = super().to_representation(instance)
-        relational_products = models.Product.objects.get_relational_products_by_category(instance.category.id)
-        if len(relational_products) :
+        relational_products = (
+            models.Product.objects.get_relational_products_by_category(
+                instance.category.id
+            )
+        )
+        if len(relational_products):
             rep["relational_products"] = relational_products
         else:
             rep["relational_products"] = []

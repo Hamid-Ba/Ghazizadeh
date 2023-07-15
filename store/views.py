@@ -49,7 +49,11 @@ class SearchProductsAPI(generics.ListAPIView):
     serializer_class = serializers.ProductListSerializer
     pagination_class = pagination.StandardPagination
     filter_class = PriceRangeFilter
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter,
+        filters.OrderingFilter,
+    ]
     filterset_fields = ["brand", "category"]
     search_fields = ["title", "category__title"]
     ordering_fields = ["created_date", "order_count", "price"]

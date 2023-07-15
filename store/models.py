@@ -1,6 +1,7 @@
 import os
 from uuid import uuid4
 from django.db import models
+from django.conf import settings
 from ckeditor.fields import RichTextField
 from djmoney.models.fields import MoneyField
 
@@ -42,9 +43,13 @@ class Category(models.Model):
 
 class ProductManager(models.Manager):
     """Product Manager"""
-    def get_relational_products_by_category(self,cat_id):
+
+    def get_relational_products_by_category(self, cat_id):
         """return products in same category"""
-        return self.filter(category=cat_id,count__gte=3).order_by("-order_count").values()
+        return (
+            self.filter(category=cat_id, count__gte=3).order_by("-order_count").values()
+        )
+
 
 class Product(models.Model):
     """Product Model"""
@@ -74,7 +79,7 @@ class Product(models.Model):
     def ordered(self, count):
         self.order_count += count
         self.save()
-        
+
     objects = ProductManager()
 
 
@@ -88,3 +93,22 @@ class Specifications(models.Model):
 
     def __str__(self):
         return f"{self.product.title}-{self.key}"
+
+
+class Comment(models.Model):
+    """Commnet Model"""
+
+    full_name = models.CharField(max_length=125, null=False, blank=False)
+    text = models.CharField(max_length=750, null=False, blank=False)
+    is_active = models.BooleanField(default=False)
+
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name="comments"
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name="comments",
+    )
