@@ -38,7 +38,7 @@ class HomeHeader(models.Model):
     )
 
     heading = models.CharField(max_length=72, null=True, blank=True)
-    paragraph = models.CharField(max_length=125, null=True, blank=True)
+    paragraph = models.CharField(max_length=300, null=True, blank=True)
     is_active = models.BooleanField(default=False)
 
     class Meta:
@@ -50,7 +50,7 @@ class Footer(models.Model):
     """Footer"""
 
     heading = models.CharField(max_length=72, null=True, blank=True)
-    paragraph = models.CharField(max_length=125, null=True, blank=True)
+    paragraph = models.CharField(max_length=300, null=True, blank=True)
 
     instagram = models.URLField(
         max_length=250,
