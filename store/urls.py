@@ -17,4 +17,5 @@ urlpatterns = [
     ),
     path("search_products", views.SearchProductsAPI.as_view(), name="search_products"),
     path("categories", views.CategoryApiView.as_view(), name="categories"),
+    path("comment", views.CreateCommentAPI.as_view(), name="create_comment"),
 ]

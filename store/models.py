@@ -101,6 +101,7 @@ class Comment(models.Model):
     full_name = models.CharField(max_length=125, null=False, blank=False)
     text = models.CharField(max_length=750, null=False, blank=False)
     is_active = models.BooleanField(default=False)
+    create_data = models.DateTimeField(auto_now_add=True)
 
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name="comments"

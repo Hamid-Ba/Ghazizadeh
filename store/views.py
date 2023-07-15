@@ -57,3 +57,10 @@ class SearchProductsAPI(generics.ListAPIView):
     filterset_fields = ["brand", "category"]
     search_fields = ["title", "category__title"]
     ordering_fields = ["created_date", "order_count", "price"]
+
+
+class CreateCommentAPI(generics.CreateAPIView):
+    """Create Comment API"""
+
+    queryset = models.Comment.objects.all()
+    serializer_class = serializers.CommentSerializer

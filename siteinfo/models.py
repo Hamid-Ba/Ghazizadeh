@@ -27,6 +27,15 @@ class ContactUs(models.Model):
         verbose_name_plural = "Contact Us"
 
 
+class Ticket(models.Model):
+    """Ticket Model"""
+
+    full_name = models.CharField(max_length=125, null=False, blank=False)
+    phone = models.CharField(max_length=11, null=False, blank=False)
+    text = models.CharField(max_length=500, null=False, blank=False)
+    create_data = models.DateTimeField(auto_now_add=True)
+
+
 class HomeHeader(models.Model):
     """Home Header"""
 

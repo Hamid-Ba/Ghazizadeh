@@ -64,8 +64,9 @@ class SliderAndBannerAdmin(admin.ModelAdmin):
     list_editable = ["is_slider"]
 
 
+admin.site.register(models.Ticket)
+admin.site.register(models.Footer, FooterAdmin)
 admin.site.register(models.AboutUs, AboutUsAdmin)
 admin.site.register(models.ContactUs, ContactUsAdmin)
 admin.site.register(models.HomeHeader, HomeHeaderAdmin)
-admin.site.register(models.Footer, FooterAdmin)
 admin.site.register(models.SliderAndBanner, SliderAndBannerAdmin)

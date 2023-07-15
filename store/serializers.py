@@ -23,6 +23,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
         model = models.Comment
         fields = "__all__"
+        read_only_fields = ["is_active"]
 
     def to_representation(self, instance):
         if instance.is_active:

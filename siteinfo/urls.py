@@ -16,4 +16,5 @@ urlpatterns = [
         views.SliderAndBannerView.as_view(),
         name="slider_and_banner",
     ),
+    path("ticket/", views.CreateTicketAPI.as_view(), name="create_ticket"),
 ]

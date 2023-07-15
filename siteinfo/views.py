@@ -56,3 +56,10 @@ class SliderAndBannerView(generics.ListAPIView):
 
     queryset = models.SliderAndBanner.objects.all()
     serializer_class = serializers.SliderAndBannerSerializer
+
+
+class CreateTicketAPI(generics.CreateAPIView):
+    """Create Ticket View"""
+
+    queryset = models.Ticket.objects.all()
+    serializer_class = serializers.TicketSerializer

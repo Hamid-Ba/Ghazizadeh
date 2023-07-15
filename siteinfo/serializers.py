@@ -54,3 +54,13 @@ class SliderAndBannerSerializer(serializers.ModelSerializer):
 
         model = models.SliderAndBanner
         fields = "__all__"
+
+
+class TicketSerializer(serializers.ModelSerializer):
+    """Ticket Serializer"""
+
+    class Meta:
+        """Meta Class"""
+
+        model = models.Ticket
+        fields = "__all__"
