@@ -23,7 +23,7 @@ class Category(models.Model):
     """Category Model"""
 
     title = models.CharField(max_length=72, null=False, blank=False)
-    logo = models.ImageField(null=False, upload_to=category_logo_file_path)
+    logo = models.ImageField(null=True,blank=True, upload_to=category_logo_file_path)
     order = models.IntegerField(default=1)
 
     parent = models.ForeignKey(

@@ -7,6 +7,7 @@ from province import models as province_model
 class Address(models.Model):
     """Address Model"""
 
+    full_name = models.CharField(max_length=225, null=False,blank=False)
     desc = models.CharField(max_length=225, null=True, blank=True)
     street = models.CharField(max_length=225, null=True, blank=True)
     postal_code = models.CharField(max_length=10)
