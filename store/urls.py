@@ -7,6 +7,8 @@ app_name = "store"
 
 router = DefaultRouter()
 router.register("products", views.ProductViewSet)
+router.register("categories", views.CategoryViewSet)
+
 
 urlpatterns = [
     path("", include(router.urls)),
@@ -16,6 +18,7 @@ urlpatterns = [
         name="best_selling_products",
     ),
     path("search_products", views.SearchProductsAPI.as_view(), name="search_products"),
-    path("categories", views.CategoryApiView.as_view(), name="categories"),
+    path("all_categories", views.CategoryApiView.as_view(), name="all_categories"),
+    # path("display_categories", views.DisplayCategoryApiView.as_view(), name="display_categories"),
     path("comment", views.CreateCommentAPI.as_view(), name="create_comment"),
 ]

@@ -15,6 +15,24 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class ParentCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        """Meta Class"""
+
+        model = models.Category
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+
+        rep["subs"] = []
+
+        if instance.sub_categories.exists():
+            rep["subs"] = instance.sub_categories.order_by("-order").values()
+
+        return rep
+
+
 class CommentSerializer(serializers.ModelSerializer):
     """Comment Serializer"""
 

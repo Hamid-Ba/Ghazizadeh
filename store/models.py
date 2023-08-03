@@ -19,11 +19,19 @@ def category_logo_file_path(instance, filename):
     return os.path.join("uploads", "category", filename)
 
 
+class CategoryManager(models.Manager):
+    """Category Manager"""
+
+    def get_parents_category(self):
+        """return main category"""
+        return self.filter(parent=None).order_by("order")
+
+
 class Category(models.Model):
     """Category Model"""
 
     title = models.CharField(max_length=72, null=False, blank=False)
-    logo = models.ImageField(null=True,blank=True, upload_to=category_logo_file_path)
+    logo = models.ImageField(null=True, blank=True, upload_to=category_logo_file_path)
     order = models.IntegerField(default=1)
 
     parent = models.ForeignKey(
@@ -39,6 +47,8 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+
+    objects = CategoryManager()
 
 
 class ProductManager(models.Manager):

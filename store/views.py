@@ -4,10 +4,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from config import pagination
 from store import models, serializers
-from store.services import product_services
+from store.services import product_services, category_services
 from store.filters import PriceRangeFilter
 
 product_service = product_services.ProductServices()
+category_service = category_services.CategoryServices()
 
 
 class CategoryApiView(generics.ListAPIView):
@@ -15,6 +16,16 @@ class CategoryApiView(generics.ListAPIView):
 
     queryset = models.Category.objects.order_by("order")
     serializer_class = serializers.CategorySerializer
+    pagination_class = pagination.StandardPagination
+
+
+class CategoryViewSet(
+    mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet
+):
+    """Category Api View"""
+
+    queryset = category_service.get_parent_cats()
+    serializer_class = serializers.ParentCategorySerializer
     pagination_class = pagination.StandardPagination
 
 

@@ -5,7 +5,7 @@ from django.urls import reverse
 
 from store import models
 
-CATEGORY_URL = reverse("store:categories")
+CATEGORY_URL = reverse("store:category-list")
 
 
 def create_category(title, logo, order=1):
