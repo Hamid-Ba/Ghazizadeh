@@ -10,4 +10,4 @@ class BrandsApiView(generics.ListAPIView):
 
     queryset = models.Brand.objects.all()
     serializer_class = serializers.BrandSerializer
-    pagination_class = pagination.StandardPagination
+    # pagination_class = pagination.StandardPagination

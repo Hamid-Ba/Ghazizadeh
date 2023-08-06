@@ -16,7 +16,7 @@ class CategoryApiView(generics.ListAPIView):
 
     queryset = models.Category.objects.order_by("order")
     serializer_class = serializers.CategorySerializer
-    pagination_class = pagination.StandardPagination
+    # pagination_class = pagination.StandardPagination
 
 
 class CategoryViewSet(
@@ -26,7 +26,7 @@ class CategoryViewSet(
 
     queryset = category_service.get_parent_cats()
     serializer_class = serializers.ParentCategorySerializer
-    pagination_class = pagination.StandardPagination
+    # pagination_class = pagination.StandardPagination
 
 
 class ProductViewSet(
