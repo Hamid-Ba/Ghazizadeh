@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "province",
     "address",
     "store",
+    "car"
 ]
 
 MIDDLEWARE = [
