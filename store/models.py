@@ -33,7 +33,8 @@ class Category(models.Model):
     title = models.CharField(max_length=72, null=False, blank=False)
     logo = models.ImageField(null=True, blank=True, upload_to=category_logo_file_path)
     order = models.IntegerField(default=1)
-
+    is_cart = models.BooleanField(default=False)
+    
     parent = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
