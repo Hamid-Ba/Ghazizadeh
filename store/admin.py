@@ -17,7 +17,7 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = [SubCategoryInline]
 
     fieldsets = (
-        (None, {"fields": ("title", "logo", "order")}),
+        (None, {"fields": ("title", "logo", "order","is_cart")}),
         (
             "Parent",
             {
