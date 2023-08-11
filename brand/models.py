@@ -18,3 +18,6 @@ class Brand(models.Model):
 
     title = models.CharField(max_length=72)
     logo = models.ImageField(null=False, upload_to=brand_logo_file_path)
+
+    def __str__(self):
+        return self.title

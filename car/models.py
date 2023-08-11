@@ -37,4 +37,4 @@ class Car_Specification(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE, related_name="specs")
 
     def __str__(self):
-        return f"{self.product.title}-{self.key}"
+        return f"{self.car.title}-{self.key}"

@@ -41,12 +41,7 @@ class CommentSerializer(serializers.ModelSerializer):
 
         model = models.Comment
         fields = "__all__"
-        read_only_fields = ["is_active"]
-
-    def to_representation(self, instance):
-        if instance.is_active:
-            return super().to_representation(instance)
-
+        read_only_fields = ["user","is_active"]
 
 class SpecificationsSerializer(serializers.ModelSerializer):
     """Specifications Serializer"""
@@ -69,7 +64,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         """Meta Class"""
 
         model = models.Product
-        fields = ["title", "price", "category", "brand", "gallery"]
+        fields = ["id","title", "price", "category", "brand", "gallery"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -79,7 +74,6 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = brand_serial.BrandSerializer(many=False)
     gallery = gallery_serial.GallerySerializer(many=True)
     specs = SpecificationsSerializer(many=True)
-    comments = CommentSerializer(many=True)
 
     class Meta:
         """Meta Class"""

@@ -124,3 +124,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name="comments",
     )
+    
+    def __str__(self) -> str:
+        return f"{self.full_name} commented for {self.product.title}"

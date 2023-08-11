@@ -1,4 +1,4 @@
-from rest_framework import generics, mixins, viewsets, filters
+from rest_framework import generics, mixins, viewsets, filters, authentication, permissions
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -70,8 +70,22 @@ class SearchProductsAPI(generics.ListAPIView):
     ordering_fields = ["created_date", "order_count", "price"]
 
 
-class CreateCommentAPI(generics.CreateAPIView):
+class ProductsCommentsApi(generics.ListAPIView):
+    
+    queryset = models.Comment.objects.filter(is_active=True)
+    serializer_class = serializers.CommentSerializer
+    
+    def list(self, request, product_id, *args, **kwargs):
+        self.queryset = self.queryset.filter(product__pk=product_id,is_active=True)
+        return super().list(request, *args, **kwargs)
+
+class CreateCommentApi(generics.CreateAPIView):
     """Create Comment API"""
 
     queryset = models.Comment.objects.all()
     serializer_class = serializers.CommentSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (authentication.TokenAuthentication,)
+    
+    def perform_create(self, serializer):
+        return serializer.save(user=self.request.user)

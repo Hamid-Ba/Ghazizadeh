@@ -38,6 +38,11 @@ class SpecificationInline(admin.TabularInline):
     model = models.Specifications
     extra = 1
 
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ("id","full_name", "is_active", "create_data")
+    list_display_links = ("id","full_name")
+    list_editable = ("is_active",)
+    
 
 class ProductAdmin(admin.ModelAdmin):
     # list_display = ("title", "category", "publish_date")
@@ -83,4 +88,4 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
-admin.site.register(models.Comment)
+admin.site.register(models.Comment, CommentAdmin)

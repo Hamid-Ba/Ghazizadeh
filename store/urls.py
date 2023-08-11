@@ -20,5 +20,6 @@ urlpatterns = [
     path("search_products", views.SearchProductsAPI.as_view(), name="search_products"),
     path("all_categories", views.CategoryApiView.as_view(), name="all_categories"),
     # path("display_categories", views.DisplayCategoryApiView.as_view(), name="display_categories"),
-    path("comment", views.CreateCommentAPI.as_view(), name="create_comment"),
+    path("comment/<int:product_id>", views.ProductsCommentsApi.as_view(), name="product_comments"),
+    path("comment", views.CreateCommentApi.as_view(), name="create_comment")
 ]
