@@ -1,5 +1,5 @@
 from django.contrib import admin
-
+from django import forms
 from store import models
 
 
@@ -9,7 +9,27 @@ class SubCategoryInline(admin.StackedInline):
     verbose_name_plural = "Sub Categories"
 
 
+class AddCategoryForm(forms.ModelForm):
+    class Meta:
+        models = models.Category
+
+    def clean(self):
+        is_cart = self.cleaned_data.get("is_cart")
+
+        if is_cart:
+            if models.Category.objects.filter(is_cart=True).count() < 4:
+                return self.cleaned_data
+            else:
+                self.add_error(
+                    "is_cart", "تعداد دسته بندی های کارتی بیشتر از ۴ مورد مجاز نمی باشد"
+                )
+                raise forms.ValidationError(
+                    "تعداد دسته بندی های کارتی بیشتر از ۴ مورد مجاز نمی باشد"
+                )
+
+
 class CategoryAdmin(admin.ModelAdmin):
+    form = AddCategoryForm
     list_display = ("title", "order", "parent")
     list_filter = ("parent",)
     search_fields = ("title",)
@@ -17,7 +37,7 @@ class CategoryAdmin(admin.ModelAdmin):
     inlines = [SubCategoryInline]
 
     fieldsets = (
-        (None, {"fields": ("title", "logo", "order","is_cart")}),
+        (None, {"fields": ("title", "logo", "order", "is_cart")}),
         (
             "Parent",
             {
@@ -38,11 +58,12 @@ class SpecificationInline(admin.TabularInline):
     model = models.Specifications
     extra = 1
 
+
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ("id","full_name", "is_active", "create_data")
-    list_display_links = ("id","full_name")
+    list_display = ("id", "full_name", "is_active", "create_data")
+    list_display_links = ("id", "full_name")
     list_editable = ("is_active",)
-    
+
 
 class ProductAdmin(admin.ModelAdmin):
     # list_display = ("title", "category", "publish_date")

@@ -9,6 +9,4 @@ router = DefaultRouter()
 router.register("cars", views.CarViewSet)
 
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = [path("", include(router.urls))]

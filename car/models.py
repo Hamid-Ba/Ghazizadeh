@@ -7,6 +7,7 @@ from django.db import models
 from brand import models as brand_models
 from gallery import models as gallery_models
 
+
 def car_image_file_path(instance, filename):
     """Generate file path for category image"""
     ext = os.path.splitext(filename)[1]
@@ -14,19 +15,23 @@ def car_image_file_path(instance, filename):
 
     return os.path.join("uploads", "car", filename)
 
+
 # Create your models here.
 class Car(models.Model):
     """Car Model"""
+
     title = models.CharField(max_length=150)
     desc = RichTextField(blank=True, null=True)
     image = models.ImageField(null=False, upload_to=car_image_file_path)
-    
+
     gallery = models.ManyToManyField(gallery_models.Gallery, related_name="cars")
-    brand = models.ForeignKey(brand_models.Brand,on_delete=models.CASCADE,related_name="cars")
-    
+    brand = models.ForeignKey(
+        brand_models.Brand, on_delete=models.CASCADE, related_name="cars"
+    )
+
     def __str__(self):
         return self.title
-    
+
 
 class Car_Specification(models.Model):
     """Specifications Model"""

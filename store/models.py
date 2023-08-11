@@ -34,7 +34,7 @@ class Category(models.Model):
     logo = models.ImageField(null=True, blank=True, upload_to=category_logo_file_path)
     order = models.IntegerField(default=1)
     is_cart = models.BooleanField(default=False)
-    
+
     parent = models.ForeignKey(
         "self",
         on_delete=models.CASCADE,
@@ -55,10 +55,13 @@ class Category(models.Model):
 class ProductManager(models.Manager):
     """Product Manager"""
 
-    def get_relational_products_by_category(self, cat_id):
+    def get_relational_products_by_category(self, product_id, cat_id):
         """return products in same category"""
         return (
-            self.filter(category=cat_id, count__gte=3).order_by("-order_count").values()
+            self.filter(category=cat_id, count__gte=3)
+            .exclude(id=product_id)
+            .order_by("-order_count")
+            .values()[:8]
         )
 
 
@@ -124,6 +127,6 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name="comments",
     )
-    
+
     def __str__(self) -> str:
         return f"{self.full_name} commented for {self.product.title}"

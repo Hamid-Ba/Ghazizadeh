@@ -41,7 +41,8 @@ class CommentSerializer(serializers.ModelSerializer):
 
         model = models.Comment
         fields = "__all__"
-        read_only_fields = ["user","is_active"]
+        read_only_fields = ["user", "is_active"]
+
 
 class SpecificationsSerializer(serializers.ModelSerializer):
     """Specifications Serializer"""
@@ -64,7 +65,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         """Meta Class"""
 
         model = models.Product
-        fields = ["id","title", "price", "category", "brand", "gallery"]
+        fields = ["id", "title", "price", "category", "brand", "gallery"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -85,7 +86,7 @@ class ProductSerializer(serializers.ModelSerializer):
         rep = super().to_representation(instance)
         relational_products = (
             models.Product.objects.get_relational_products_by_category(
-                instance.category.id
+                instance.id, instance.category.id
             )
         )
         if len(relational_products):

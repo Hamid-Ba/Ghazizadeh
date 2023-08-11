@@ -2,6 +2,7 @@ from django.contrib import admin
 
 from car import models
 
+
 # Register your models here.
 class SpecificationInline(admin.TabularInline):
     model = models.Car_Specification
@@ -10,5 +11,6 @@ class SpecificationInline(admin.TabularInline):
 
 class CarAdmin(admin.ModelAdmin):
     inlines = [SpecificationInline]
+
 
 admin.site.register(models.Car, CarAdmin)
