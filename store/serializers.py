@@ -75,6 +75,7 @@ class ProductSerializer(serializers.ModelSerializer):
     brand = brand_serial.BrandSerializer(many=False)
     gallery = gallery_serial.GallerySerializer(many=True)
     specs = SpecificationsSerializer(many=True)
+    comments = CommentSerializer(many=True)
 
     class Meta:
         """Meta Class"""
@@ -89,6 +90,7 @@ class ProductSerializer(serializers.ModelSerializer):
                 instance.id, instance.category.id
             )
         )
+        rep["comments"] = instance.get_active_comments()
         if len(relational_products):
             rep["relational_products"] = relational_products
         else:

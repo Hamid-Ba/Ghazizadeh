@@ -77,13 +77,13 @@ class SearchProductsAPI(generics.ListAPIView):
     ordering_fields = ["created_date", "order_count", "price"]
 
 
-class ProductsCommentsApi(generics.ListAPIView):
-    queryset = models.Comment.objects.filter(is_active=True)
-    serializer_class = serializers.CommentSerializer
+# class ProductsCommentsApi(generics.ListAPIView):
+#     queryset = models.Comment.objects.filter(is_active=True)
+#     serializer_class = serializers.CommentSerializer
 
-    def list(self, request, product_id, *args, **kwargs):
-        self.queryset = self.queryset.filter(product__pk=product_id, is_active=True)
-        return super().list(request, *args, **kwargs)
+#     def list(self, request, product_id, *args, **kwargs):
+#         self.queryset = self.queryset.filter(product__pk=product_id, is_active=True)
+#         return super().list(request, *args, **kwargs)
 
 
 class CreateCommentApi(generics.CreateAPIView):

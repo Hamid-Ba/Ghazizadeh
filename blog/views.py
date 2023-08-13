@@ -4,7 +4,7 @@ Blog Module Views
 from rest_framework import generics
 from django.utils import timezone
 
-from blog.pagination import BlogPagination
+from config import pagination
 from blog import serializers, models
 
 
@@ -20,7 +20,7 @@ class BlogsView(generics.ListAPIView):
     """List Of Blogs View"""
 
     queryset = models.Blog.objects.all()
-    pagination_class = BlogPagination
+    pagination_class = pagination.StandardPagination
     serializer_class = serializers.BlogSerializer
 
     def get_queryset(self):

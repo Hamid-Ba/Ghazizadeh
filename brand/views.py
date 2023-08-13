@@ -1,6 +1,5 @@
 from rest_framework import generics
 
-from config import pagination
 from brand import models, serializers
 
 

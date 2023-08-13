@@ -94,6 +94,9 @@ class Product(models.Model):
         self.order_count += count
         self.save()
 
+    def get_active_comments(self):
+        return self.comments.filter(is_active=True).order_by("create_data").values()
+
     objects = ProductManager()
 
 

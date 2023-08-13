@@ -23,7 +23,7 @@ class CarListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Car
-        fields = ["title", "brand", "image"]
+        fields = ["id", "title", "brand", "image"]
 
 
 class CarSerializer(serializers.ModelSerializer):

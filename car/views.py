@@ -1,7 +1,7 @@
 from rest_framework import mixins, viewsets
 from django_filters.rest_framework import DjangoFilterBackend
 
-import pagination
+from config import pagination
 
 from car import serializers
 from car.services import car_services
