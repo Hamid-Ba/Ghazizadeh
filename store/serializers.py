@@ -113,7 +113,6 @@ class CreateOrderSerializer(serializers.ModelSerializer):
 
     items = OrderItemSerializer(many=True)
     
-
     class Meta:
         model = models.Order
         fields = "__all__"
@@ -127,7 +126,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             
             if product_item.exists():
                 if not product_item.first().can_order(count):
-                    raise ValueError(f"تعداد محصول درخواستی {product_item.title} در انبار موجود نمی باشد")
+                    raise ValueError(f"تعداد محصول درخواستی {product_item.first().title} در انبار موجود نمی باشد")
             
         for item in items:
             order.items.create(

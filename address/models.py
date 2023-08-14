@@ -17,3 +17,6 @@ class Address(models.Model):
     )
     province = models.ForeignKey(province_model.Province, on_delete=models.DO_NOTHING)
     city = models.ForeignKey(province_model.City, on_delete=models.DO_NOTHING)
+
+    def __str__(self) -> str:
+        return f"{self.full_name} - {self.postal_code}"

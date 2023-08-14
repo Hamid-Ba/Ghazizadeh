@@ -102,14 +102,12 @@ class CreateCommentApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 
-class OrderApiView(mixins.CreateModelMixin,
-                   mixins.RetrieveModelMixin,
-                   mixins.ListModelMixin,
+class CreateOrderApiView(mixins.CreateModelMixin,
                    viewsets.GenericViewSet):
     """Order Api View"""
 
     queryset = models.Order.objects.all()
-    serializer_class = serializers.OrderSerializer
+    serializer_class = serializers.CreateOrderSerializer
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (authentication.TokenAuthentication,)
 
@@ -117,26 +115,27 @@ class OrderApiView(mixins.CreateModelMixin,
         user = self.request.user
         return self.queryset.filter(user=user).order_by("-registered_date")
 
-    def get_serializer_class(self):
-        if self.action == "create":
-            self.serializer_class = serializers.CreateOrderSerializer
+    # def get_serializer_class(self):
+    #     if self.action == "create":
+    #         self.serializer_class = serializers.CreateOrderSerializer
         
-        return self.serializer_class
+    #     return self.serializer_class
         
     def create(self, request, *args, **kwargs):
         user = self.request.user
         request.data["user"] = user.id
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(user=user)
             
             if settings.DEBUG:
                 domain = Site.objects.filter(domain__contains="127").first()
-                req_url = f"http://{domain}/api/payment/place_store_order/{serializer.data['id']}/"
+                req_url = f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                return Response(req_url, status=status.HTTP_201_CREATED)
 
             else:
                 domain = Site.objects.filter(domain__contains="api.ghazizadeh").first()
-                req_url = f"https://{domain}/api/payment/place_store_order/{serializer.data['id']}/"
+                req_url = f"https://{domain}/api/payment/place_order/{serializer.data['id']}/"
 
             return redirect(req_url)
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
