@@ -108,12 +108,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("order",)
 
-
-class OrderSerializer(serializers.ModelSerializer):
+class CreateOrderSerializer(serializers.ModelSerializer):
     """Order Serializer"""
 
     items = OrderItemSerializer(many=True)
-    address = address_serial.AddressSerializer(many=False)
+    
 
     class Meta:
         model = models.Order
@@ -154,3 +153,8 @@ class OrderSerializer(serializers.ModelSerializer):
         order.save()
 
         return order
+    
+class OrderSerializer(CreateOrderSerializer):
+    """Create Order Serialzier"""
+    
+    address = address_serial.AddressSerializer(many=False)

@@ -117,6 +117,12 @@ class OrderApiView(mixins.CreateModelMixin,
         user = self.request.user
         return self.queryset.filter(user=user).order_by("-registered_date")
 
+    def get_serializer_class(self):
+        if self.action == "create":
+            self.serializer_class = serializers.CreateOrderSerializer
+        
+        return self.serializer_class
+        
     def create(self, request, *args, **kwargs):
         user = self.request.user
         request.data["user"] = user.id

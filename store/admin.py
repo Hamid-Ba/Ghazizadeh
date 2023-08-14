@@ -107,7 +107,7 @@ class ProductAdmin(admin.ModelAdmin):
     #     return queryset
 
 class OrderItemInline(admin.TabularInline):
-    model = models.StoreOrderItem
+    model = models.OrderItem
     extra = 1
 
 
