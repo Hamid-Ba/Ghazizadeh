@@ -106,7 +106,30 @@ class ProductAdmin(admin.ModelAdmin):
 
     #     return queryset
 
+class OrderItemInline(admin.TabularInline):
+    model = models.StoreOrderItem
+    extra = 1
+
+
+class OrderAdmin(admin.ModelAdmin):
+    list_display = (
+        "code",
+        "address",
+        "state",
+        "total_price",
+        "user",
+        "phone",
+    )
+    inlines = [
+        OrderItemInline,
+    ]
+    search_fields = ["code","phone"]
+
+
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ("order_id","brand" , "title", "price", "count", "image_url")
 
 admin.site.register(models.Category, CategoryAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.Comment, CommentAdmin)
+admin.site.register(models.Order, OrderAdmin)

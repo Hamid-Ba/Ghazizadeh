@@ -28,7 +28,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1
 
+SITE = {"front": {"protocol": "https", "url": "ghazizadeh.ir"}}
 # Application definition
 
 INSTALLED_APPS = [
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",
     "django_filters",
     "rest_framework",
     "rest_framework.authtoken",
@@ -171,3 +174,9 @@ SPECTACULAR_SETTINGS = {
 }
 
 KAVENEGAR_API_KEY = ""
+# Zarinpal setting
+MERCHANT_ID = "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+VERIFY_URL = "http://127.0.0.1:8000/api/payment/verify_order/"
+VERIFY_STORE_URL = "http://127.0.0.1:8000/api/payment/verify_store_order/"
+# SELLER_LOCAL_VERIFY = "http://cafesiran.ir/dashboard/verify/"
+FRONT_VERIFY = "https://ghazizadeh.ir/dashboard/verify/"

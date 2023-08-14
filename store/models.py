@@ -4,9 +4,12 @@ from django.db import models
 from django.conf import settings
 from ckeditor.fields import RichTextField
 from djmoney.models.fields import MoneyField
+from django.core.validators import MinValueValidator
 
+from config import validators
 from brand import models as brand_models
 from gallery import models as gallery_models
+from address import models as address_models
 
 # Create your models here.
 
@@ -90,8 +93,13 @@ class Product(models.Model):
     def __str__(self):
         return self.title
 
+    def can_order(self, count):
+        return count < self.count
+            
+    
     def ordered(self, count):
         self.order_count += count
+        self.count -= count
         self.save()
 
     def get_active_comments(self):
@@ -133,3 +141,47 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f"{self.full_name} commented for {self.product.title}"
+
+
+class Order(models.Model):
+    class OrderState(models.TextChoices):
+        PENDING = "P", "در صف انتظار"
+        CONFIRMED = "D", "تحویل داده شده"
+        REJECTED = "C", "لغو شده"
+
+    code = models.CharField(max_length=5, blank=False, null=True)
+    state = models.CharField(
+        max_length=1, default=OrderState.PENDING, choices=OrderState.choices
+    )
+    total_price = MoneyField(
+        max_digits=10, decimal_places=0, default_currency="IRR", null=False
+    )
+    phone = models.CharField(
+        max_length=11, blank=False, null=False, validators=[validators.PhoneValidator]
+    )
+    registered_date = models.DateTimeField(auto_now_add=True, editable=False)
+    address = models.ForeignKey(
+        address_models.Address, on_delete=models.DO_NOTHING, related_name="orders"
+    )
+    
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
+    )
+
+    def __str__(self):
+        return f"Order #{self.id}-{self.code}"
+
+
+class OrderItem(models.Model):
+    product_id = models.BigIntegerField(null=False, blank=False)
+    brand = models.CharField(max_length=125, null=False, blank=False)
+    title = models.CharField(max_length=125, null=False, blank=False)
+    image_url = models.CharField(max_length=250, null=False, blank=False)
+    price = MoneyField(
+        max_digits=10, decimal_places=0, default_currency="IRR", null=False
+    )
+    count = models.IntegerField(validators=[MinValueValidator(1)])
+
+    order = models.ForeignKey(
+        Order, on_delete=models.CASCADE, related_name="items"
+    )

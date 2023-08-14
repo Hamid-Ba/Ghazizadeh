@@ -6,8 +6,13 @@ from rest_framework import (
     authentication,
     permissions,
 )
+import requests
+from django.conf import settings
+from rest_framework import status
+from django.shortcuts import redirect
+from django.contrib.sites.models import Site
+from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
-
 
 from config import pagination
 from store import models, serializers
@@ -96,3 +101,38 @@ class CreateCommentApi(generics.CreateAPIView):
 
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
+
+class OrderApiView(mixins.CreateModelMixin,
+                   mixins.RetrieveModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet):
+    """Order Api View"""
+
+    queryset = models.Order.objects.all()
+    serializer_class = serializers.OrderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (authentication.TokenAuthentication,)
+
+    def get_queryset(self):
+        user = self.request.user
+        return self.queryset.filter(user=user).order_by("-registered_date")
+
+    def create(self, request, *args, **kwargs):
+        user = self.request.user
+        request.data["user"] = user.id
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            
+            if settings.DEBUG:
+                domain = Site.objects.filter(domain__contains="127").first()
+                req_url = f"http://{domain}/api/payment/place_store_order/{serializer.data['id']}/"
+
+            else:
+                domain = Site.objects.filter(domain__contains="api.ghazizadeh").first()
+                req_url = f"https://{domain}/api/payment/place_store_order/{serializer.data['id']}/"
+
+            return redirect(req_url)
+            # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

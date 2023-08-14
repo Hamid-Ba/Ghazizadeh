@@ -1,8 +1,10 @@
+from uuid import uuid4
 from rest_framework import serializers
 
 from store import models
 from brand import serializers as brand_serial
 from gallery import serializers as gallery_serial
+from address import serializers as address_serial
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -96,3 +98,59 @@ class ProductSerializer(serializers.ModelSerializer):
         else:
             rep["relational_products"] = []
         return rep
+
+
+class OrderItemSerializer(serializers.ModelSerializer):
+    """Order Item Serializer"""
+
+    class Meta:
+        model = models.OrderItem
+        fields = "__all__"
+        read_only_fields = ("order",)
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    """Order Serializer"""
+
+    items = OrderItemSerializer(many=True)
+    address = address_serial.AddressSerializer(many=False)
+
+    class Meta:
+        model = models.Order
+        fields = "__all__"
+        read_only_fields = ("user","code", "state")
+
+    def _add_items(self, order, items):
+        for item in items:
+            product_id = item["product_id"]
+            count = item["count"]
+            product_item = models.Product.objects.filter(id=product_id)
+            
+            if product_item.exists():
+                if not product_item.first().can_order(count):
+                    raise ValueError(f"تعداد محصول درخواستی {product_item.title} در انبار موجود نمی باشد")
+            
+        for item in items:
+            order.items.create(
+                product_id=item["product_id"],
+                brand=item["brand"],
+                title=item["title"],
+                image_url=item["image_url"],
+                price=item["price"],
+                count=item["count"],
+            )
+
+            product_item = models.Product.objects.filter(id=item["product_id"])
+            if product_item.exists():
+                product_item.first().ordered(item["count"])
+
+    def create(self, validated_data):
+        """Custom Create"""
+        items = validated_data.pop("items", [])
+        code = str(uuid4())[:5]
+
+        order = models.Order.objects.create(code=code, **validated_data)
+        self._add_items(order, items)
+        order.save()
+
+        return order

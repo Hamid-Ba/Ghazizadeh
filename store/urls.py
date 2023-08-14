@@ -6,6 +6,7 @@ from store import views
 app_name = "store"
 
 router = DefaultRouter()
+router.register("order", views.OrderApiView)
 router.register("products", views.ProductViewSet)
 router.register("categories", views.CategoryViewSet)
 
