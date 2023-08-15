@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "corsheaders",
     "djmoney",
+    "jalali_date",
     "taggit",
     "account",
     "blog",
@@ -58,6 +59,7 @@ INSTALLED_APPS = [
     "address",
     "store",
     "car",
+    "discount",
     "zarinpal"
 ]
 
