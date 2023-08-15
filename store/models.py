@@ -142,6 +142,16 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return f"{self.full_name} commented for {self.product.title}"
 
+class PaymentMethod(models.Model):
+    """Payment Method Model"""
+    
+    title = models.CharField(max_length=125, null=False, blank=False)
+    price = MoneyField(
+        max_digits=10, decimal_places=0, default_currency="IRR", null=False
+    )
+    
+    def __str__(self) -> str:
+        return self.title
 
 class Order(models.Model):
     class OrderState(models.TextChoices):
@@ -166,6 +176,10 @@ class Order(models.Model):
     
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
+    )
+    
+    payment_method = models.ForeignKey(
+        PaymentMethod, on_delete=models.DO_NOTHING, related_name="orders", null=True, blank=True
     )
 
     def __str__(self):

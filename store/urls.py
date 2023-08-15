@@ -6,9 +6,10 @@ from store import views
 app_name = "store"
 
 router = DefaultRouter()
-router.register("order", views.CreateOrderApiView)
+router.register("order", views.OrderViewSet)
 router.register("products", views.ProductViewSet)
 router.register("categories", views.CategoryViewSet)
+router.register("payment_method", views.PaymentMethodViewSet)
 
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     #     views.ProductsCommentsApi.as_view(),
     #     name="product_comments",
     # ),
+    path("place_order", views.CreateOrderApiView.as_view(), name="place_order"),
     path("comment", views.CreateCommentApi.as_view(), name="create_comment"),
 ]

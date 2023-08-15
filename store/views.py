@@ -102,8 +102,7 @@ class CreateCommentApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 
-class CreateOrderApiView(mixins.CreateModelMixin,
-                   viewsets.GenericViewSet):
+class CreateOrderApiView(generics.CreateAPIView):
     """Order Api View"""
 
     queryset = models.Order.objects.all()
@@ -141,3 +140,23 @@ class CreateOrderApiView(mixins.CreateModelMixin,
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class OrderViewSet(mixins.RetrieveModelMixin,
+                   mixins.ListModelMixin,
+                   viewsets.GenericViewSet):
+    """Order View Set"""    
+    queryset = models.Order.objects.all()
+    serializer_class = serializers.OrderSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (authentication.TokenAuthentication,)
+    
+    def get_queryset(self):
+        user = self.request.user
+        return self.queryset.filter(user=user).order_by("-registered_date")
+
+class PaymentMethodViewSet(mixins.RetrieveModelMixin,
+                           mixins.ListModelMixin,
+                           viewsets.GenericViewSet):
+    """Payment Method View Set"""
+    queryset = models.PaymentMethod.objects.all()
+    serializer_class = serializers.PaymentMethodSerializer

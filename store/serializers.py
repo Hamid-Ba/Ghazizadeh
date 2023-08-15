@@ -99,6 +99,12 @@ class ProductSerializer(serializers.ModelSerializer):
             rep["relational_products"] = []
         return rep
 
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    """Payment Method Serializer"""
+    
+    class Meta:
+        model = models.PaymentMethod
+        fields = "__all__"
 
 class OrderItemSerializer(serializers.ModelSerializer):
     """Order Item Serializer"""
@@ -157,3 +163,4 @@ class OrderSerializer(CreateOrderSerializer):
     """Create Order Serialzier"""
     
     address = address_serial.AddressSerializer(many=False)
+    payment_method = PaymentMethodSerializer(many=False)

@@ -128,8 +128,13 @@ class OrderAdmin(admin.ModelAdmin):
 
 class OrderItemAdmin(admin.ModelAdmin):
     list_display = ("order_id","brand" , "title", "price", "count", "image_url")
+    
+class PaymentMethodAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "price")
+    list_display_links = ("id", "title")
 
-admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.Comment, CommentAdmin)
-admin.site.register(models.Order, OrderAdmin)
+admin.site.register(models.Category, CategoryAdmin)
+admin.site.register(models.PaymentMethod, PaymentMethodAdmin)
