@@ -9,6 +9,7 @@ django-money==3.0.0
 kavenegar==1.1.2
 zeep==3.4.0
 django-taggit==3.1.0
+django-jalali-date
 
 # Clean Coding
 flake8
