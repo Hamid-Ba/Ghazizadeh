@@ -133,8 +133,15 @@ class CreateOrderApiView(generics.CreateAPIView):
                 return Response(req_url, status=status.HTTP_201_CREATED)
 
             else:
-                domain = Site.objects.filter(domain__contains="api.ghazizadeh").first()
-                req_url = f"https://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                domain = Site.objects.filter(domain__contains="api.ghazizadeh")
+                
+                if domain.exists():
+                    domain = domain.first()
+                    http = "https"
+                else :
+                    domain = "87.248.153.97:8000"
+                    http = "http"
+                req_url = f"{http}://{domain}/api/payment/place_order/{serializer.data['id']}/"
 
             return redirect(req_url)
             # return Response(serializer.data, status=status.HTTP_201_CREATED)
