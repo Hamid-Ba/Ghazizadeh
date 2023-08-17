@@ -19,7 +19,7 @@ FRONT_VERIFY = settings.FRONT_VERIFY
 class PlaceOrderView(APIView):
     """Making Payment View."""
 
-    # permission_classes = (HasCafe,)
+    permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (authentication.TokenAuthentication,)
 
     def get(self, request, order_id, *args, **kwargs):
