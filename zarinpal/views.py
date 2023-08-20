@@ -12,9 +12,11 @@ from .models import Payment
 from store.models import Order
 from .zp import Zarinpal, ZarinpalError
 from .serializers import PaymentSerializer
+from store.services import order_services
 
 zarin_pal = Zarinpal(settings.MERCHANT_ID, settings.VERIFY_URL, sandbox=True)
 FRONT_VERIFY = settings.FRONT_VERIFY
+order_service = order_services.OrderServices()
 
 class PlaceOrderView(APIView):
     """Making Payment View."""
@@ -66,6 +68,8 @@ class VerifyOrderView(APIView):
     permission_classes = (permissions.AllowAny,)
 
     def get(self, request, *args, **kwargs):
+        order_service = order_services.OrderServices()
+        
         try:
             res_data = request.query_params
             authority = res_data["Authority"]
@@ -77,6 +81,7 @@ class VerifyOrderView(APIView):
         if res_data["Status"] != "OK":
             payment.status = 3
             payment.save()
+            order_service.delete_order(payment.order.id)
             return redirect(FRONT_VERIFY + "?status=CANCELLED")
         try:
             code, message, ref_id = zarin_pal.payment_verification(
@@ -90,7 +95,8 @@ class VerifyOrderView(APIView):
                 payment.payed_date = datetime.datetime.now()
                 payment.status = 2
                 payment.save()
-
+                
+                order_service.reduction_inventory(payment.order.id)
                 return redirect(FRONT_VERIFY + "?status=OK&RefID=" + str(ref_id))
             # operation was successful but PaymentVerification operation on this transaction have already been done
             elif code == 101:
@@ -98,6 +104,7 @@ class VerifyOrderView(APIView):
 
         # if got an error from zarinpal
         except ZarinpalError:
+            order_service.delete_order(payment.order.id)
             return redirect(FRONT_VERIFY + "?status=NOK")
 
 

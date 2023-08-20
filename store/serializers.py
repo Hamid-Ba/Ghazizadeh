@@ -132,6 +132,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
             
             if product_item.exists():
                 if not product_item.first().can_order(count):
+                    models.Order.objects.filter(id=order.id).delete()
                     raise ValueError(f"تعداد محصول درخواستی {product_item.first().title} در انبار موجود نمی باشد")
             
         for item in items:
@@ -144,9 +145,9 @@ class CreateOrderSerializer(serializers.ModelSerializer):
                 count=item["count"],
             )
 
-            product_item = models.Product.objects.filter(id=item["product_id"])
-            if product_item.exists():
-                product_item.first().ordered(item["count"])
+            # product_item = models.Product.objects.filter(id=item["product_id"])
+            # if product_item.exists():
+            #     product_item.first().ordered(item["count"])
 
     def create(self, validated_data):
         """Custom Create"""
