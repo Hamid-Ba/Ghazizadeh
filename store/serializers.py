@@ -99,12 +99,14 @@ class ProductSerializer(serializers.ModelSerializer):
             rep["relational_products"] = []
         return rep
 
+
 class PaymentMethodSerializer(serializers.ModelSerializer):
     """Payment Method Serializer"""
-    
+
     class Meta:
         model = models.PaymentMethod
         fields = "__all__"
+
 
 class OrderItemSerializer(serializers.ModelSerializer):
     """Order Item Serializer"""
@@ -114,27 +116,30 @@ class OrderItemSerializer(serializers.ModelSerializer):
         fields = "__all__"
         read_only_fields = ("order",)
 
+
 class CreateOrderSerializer(serializers.ModelSerializer):
     """Order Serializer"""
 
     items = OrderItemSerializer(many=True)
-    
+
     class Meta:
         model = models.Order
         fields = "__all__"
-        read_only_fields = ("user","code", "state")
+        read_only_fields = ("user", "code", "state")
 
     def _add_items(self, order, items):
         for item in items:
             product_id = item["product_id"]
             count = item["count"]
             product_item = models.Product.objects.filter(id=product_id)
-            
+
             if product_item.exists():
                 if not product_item.first().can_order(count):
                     models.Order.objects.filter(id=order.id).delete()
-                    raise ValueError(f"تعداد محصول درخواستی {product_item.first().title} در انبار موجود نمی باشد")
-            
+                    raise ValueError(
+                        f"تعداد محصول درخواستی {product_item.first().title} در انبار موجود نمی باشد"
+                    )
+
         for item in items:
             order.items.create(
                 product_id=item["product_id"],
@@ -159,9 +164,10 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         order.save()
 
         return order
-    
+
+
 class OrderSerializer(CreateOrderSerializer):
     """Create Order Serialzier"""
-    
+
     address = address_serial.AddressSerializer(many=False)
     payment_method = PaymentMethodSerializer(many=False)

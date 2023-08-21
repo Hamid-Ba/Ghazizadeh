@@ -102,6 +102,7 @@ class CreateCommentApi(generics.CreateAPIView):
     def perform_create(self, serializer):
         return serializer.save(user=self.request.user)
 
+
 class CreateOrderApiView(generics.CreateAPIView):
     """Order Api View"""
 
@@ -117,28 +118,30 @@ class CreateOrderApiView(generics.CreateAPIView):
     # def get_serializer_class(self):
     #     if self.action == "create":
     #         self.serializer_class = serializers.CreateOrderSerializer
-        
+
     #     return self.serializer_class
-        
+
     def create(self, request, *args, **kwargs):
         user = self.request.user
         request.data["user"] = user.id
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             serializer.save(user=user)
-            
+
             if settings.DEBUG:
                 domain = Site.objects.filter(domain__contains="127").first()
-                req_url = f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                req_url = (
+                    f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                )
                 return Response(req_url, status=status.HTTP_201_CREATED)
 
             else:
                 domain = Site.objects.filter(domain__contains="api.ghazizadeh")
-                
+
                 if domain.exists():
                     domain = domain.first()
                     http = "https"
-                else :
+                else:
                     domain = "87.248.153.97:8000"
                     http = "http"
                 req_url = f"{http}://{domain}/api/payment/place_order/{serializer.data['id']}/"
@@ -148,22 +151,26 @@ class CreateOrderApiView(generics.CreateAPIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class OrderViewSet(mixins.RetrieveModelMixin,
-                   mixins.ListModelMixin,
-                   viewsets.GenericViewSet):
-    """Order View Set"""    
+
+class OrderViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
+    """Order View Set"""
+
     queryset = models.Order.objects.all()
     serializer_class = serializers.OrderSerializer
     permission_classes = (permissions.IsAuthenticated,)
     authentication_classes = (authentication.TokenAuthentication,)
-    
+
     def get_queryset(self):
         user = self.request.user
         return self.queryset.filter(user=user).order_by("-registered_date")
 
-class PaymentMethodViewSet(mixins.RetrieveModelMixin,
-                           mixins.ListModelMixin,
-                           viewsets.GenericViewSet):
+
+class PaymentMethodViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
     """Payment Method View Set"""
+
     queryset = models.PaymentMethod.objects.all()
     serializer_class = serializers.PaymentMethodSerializer

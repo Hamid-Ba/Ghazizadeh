@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "store",
     "car",
     "discount",
-    "zarinpal"
+    "zarinpal",
 ]
 
 MIDDLEWARE = [
@@ -97,14 +97,14 @@ WSGI_APPLICATION = "config.wsgi.application"
 
 # default settings (optional)
 JALALI_DATE_DEFAULTS = {
-   'Strftime': {
-        'date': '%y/%m/%d',
-        'datetime': '%H:%M:%S _ %y/%m/%d',
+    "Strftime": {
+        "date": "%y/%m/%d",
+        "datetime": "%H:%M:%S _ %y/%m/%d",
     },
-    'Static': {
-        'js': [
+    "Static": {
+        "js": [
             # loading datepicker
-            'admin/js/django_jalali.min.js',
+            "admin/js/django_jalali.min.js",
             # OR
             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.core.js',
             # 'admin/jquery.ui.datepicker.jalali/scripts/calendar.js',
@@ -112,11 +112,11 @@ JALALI_DATE_DEFAULTS = {
             # 'admin/jquery.ui.datepicker.jalali/scripts/jquery.ui.datepicker-cc-fa.js',
             # 'admin/js/main.js',
         ],
-        'css': {
-            'all': [
-                'admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css',
+        "css": {
+            "all": [
+                "admin/jquery.ui.datepicker.jalali/themes/base/jquery-ui.min.css",
             ]
-        }
+        },
     },
 }
 

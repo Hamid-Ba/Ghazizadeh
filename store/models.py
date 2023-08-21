@@ -10,6 +10,7 @@ from config import validators
 from brand import models as brand_models
 from gallery import models as gallery_models
 from address import models as address_models
+from discount import models as discount_models
 
 # Create your models here.
 
@@ -95,8 +96,7 @@ class Product(models.Model):
 
     def can_order(self, count):
         return count < self.count
-            
-    
+
     def ordered(self, count):
         self.order_count += count
         self.count -= count
@@ -142,16 +142,18 @@ class Comment(models.Model):
     def __str__(self) -> str:
         return f"{self.full_name} commented for {self.product.title}"
 
+
 class PaymentMethod(models.Model):
     """Payment Method Model"""
-    
+
     title = models.CharField(max_length=125, null=False, blank=False)
     price = MoneyField(
         max_digits=10, decimal_places=0, default_currency="IRR", null=False
     )
-    
+
     def __str__(self) -> str:
         return self.title
+
 
 class Order(models.Model):
     class OrderState(models.TextChoices):
@@ -173,13 +175,25 @@ class Order(models.Model):
     address = models.ForeignKey(
         address_models.Address, on_delete=models.DO_NOTHING, related_name="orders"
     )
-    
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="orders"
     )
-    
+
+    discount = models.ForeignKey(
+        discount_models.DiscountCode,
+        null=True,
+        blank=True,
+        on_delete=models.DO_NOTHING,
+        related_name="orders",
+    )
+
     payment_method = models.ForeignKey(
-        PaymentMethod, on_delete=models.DO_NOTHING, related_name="orders", null=True, blank=True
+        PaymentMethod,
+        on_delete=models.DO_NOTHING,
+        related_name="orders",
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
@@ -196,6 +210,4 @@ class OrderItem(models.Model):
     )
     count = models.IntegerField(validators=[MinValueValidator(1)])
 
-    order = models.ForeignKey(
-        Order, on_delete=models.CASCADE, related_name="items"
-    )
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")

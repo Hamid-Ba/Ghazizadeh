@@ -18,6 +18,7 @@ zarin_pal = Zarinpal(settings.MERCHANT_ID, settings.VERIFY_URL, sandbox=True)
 FRONT_VERIFY = settings.FRONT_VERIFY
 order_service = order_services.OrderServices()
 
+
 class PlaceOrderView(APIView):
     """Making Payment View."""
 
@@ -38,10 +39,7 @@ class PlaceOrderView(APIView):
         try:
             # try to create payment if success get url to redirect it
             redirect_url = zarin_pal.payment_request(
-                int(order.total_price.amount),
-                desc,
-                mobile=user.phone,
-                email=None
+                int(order.total_price.amount), desc, mobile=user.phone, email=None
             )
 
             payment = Payment.objects.create(
@@ -69,7 +67,7 @@ class VerifyOrderView(APIView):
 
     def get(self, request, *args, **kwargs):
         order_service = order_services.OrderServices()
-        
+
         try:
             res_data = request.query_params
             authority = res_data["Authority"]
@@ -95,7 +93,7 @@ class VerifyOrderView(APIView):
                 payment.payed_date = datetime.datetime.now()
                 payment.status = 2
                 payment.save()
-                
+
                 order_service.reduction_inventory(payment.order.id)
                 return redirect(FRONT_VERIFY + "?status=OK&RefID=" + str(ref_id))
             # operation was successful but PaymentVerification operation on this transaction have already been done

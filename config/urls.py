@@ -35,6 +35,7 @@ urlpatterns = [
     path("api/store/", include("store.urls")),
     path("api/car/", include("car.urls")),
     path("api/payment/", include("zarinpal.urls")),
+    path("api/discount/", include("discount.urls")),
 ]
 
 

@@ -106,6 +106,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     #     return queryset
 
+
 class OrderItemInline(admin.TabularInline):
     model = models.OrderItem
     extra = 1
@@ -123,15 +124,17 @@ class OrderAdmin(admin.ModelAdmin):
     inlines = [
         OrderItemInline,
     ]
-    search_fields = ["code","phone"]
+    search_fields = ["code", "phone"]
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("order_id","brand" , "title", "price", "count", "image_url")
-    
+    list_display = ("order_id", "brand", "title", "price", "count", "image_url")
+
+
 class PaymentMethodAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "price")
     list_display_links = ("id", "title")
+
 
 admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.Product, ProductAdmin)
