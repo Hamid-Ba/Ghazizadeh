@@ -72,8 +72,8 @@ class AuthenticationSerializer(serializers.Serializer):
         user.set_password(otp)
 
         # For Test
-        if settings.DEBUG:
-            user.first_name = otp
+        # if settings.DEBUG:
+        user.first_name = otp
         user.save()
         # Send Otp Code
         if not settings.DEBUG:
