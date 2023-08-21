@@ -61,26 +61,26 @@ class Footer(models.Model):
     heading = models.CharField(max_length=72, null=True, blank=True)
     paragraph = models.CharField(max_length=300, null=True, blank=True)
 
-    instagram = models.URLField(
-        max_length=250,
-        blank=True,
-        null=True,
-        error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
-    )
+    # instagram = models.URLField(
+    #     max_length=250,
+    #     blank=True,
+    #     null=True,
+    #     error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
+    # )
 
-    tweeter = models.URLField(
-        max_length=250,
-        blank=True,
-        null=True,
-        error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
-    )
+    # tweeter = models.URLField(
+    #     max_length=250,
+    #     blank=True,
+    #     null=True,
+    #     error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
+    # )
 
-    telegram = models.URLField(
-        max_length=250,
-        blank=True,
-        null=True,
-        error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
-    )
+    # telegram = models.URLField(
+    #     max_length=250,
+    #     blank=True,
+    #     null=True,
+    #     error_messages={"invalid": "مقدار وارد شده صحیح نم باشد"},
+    # )
 
     is_active = models.BooleanField(default=False)
 
