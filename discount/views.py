@@ -16,7 +16,7 @@ class DiscountCodeApiView(generics.RetrieveAPIView):
         if discount_service.is_discount_code_valid(code, self.request.user):
             code = discount_service.get_discount_by(code)
             serializer = self.serializer_class(instance=code)
-            return response.Response(serializer.data, status=status.HTTP_403_FORBIDDEN)
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
 
         return response.Response(
             {"message": "کد وارد شده معتبر نمی باشد"}, status=status.HTTP_403_FORBIDDEN
