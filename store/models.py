@@ -62,7 +62,7 @@ class ProductManager(models.Manager):
     def get_relational_products_by_category(self, product_id, cat_id):
         """return products in same category"""
         return (
-            self.filter(category=cat_id, count__gte=3)
+            self.filter(category=cat_id, count__gte=2)
             .exclude(id=product_id)
             .order_by("-order_count")
             .values()[:8]
@@ -211,3 +211,6 @@ class OrderItem(models.Model):
     count = models.IntegerField(validators=[MinValueValidator(1)])
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    
+    def __str__(self):
+        return f"Order #{self.product_id}-{self.title}"

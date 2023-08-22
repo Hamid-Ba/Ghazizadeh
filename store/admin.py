@@ -66,9 +66,11 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    # list_display = ("title", "category", "publish_date")
-    # list_filter = ("category", "tags")
-    # search_fields = ("title", "short_desc", "desc")
+    list_display = ("id" ,"title", "category", "brand", "price", "count", "order_count")
+    list_display_links = ("id", "title")
+    list_filter = ("category__title", "brand__title")
+    list_editable = ["count"]
+    search_fields = ("title", "category__title", "brand__title")
 
     inlines = [SpecificationInline]
 

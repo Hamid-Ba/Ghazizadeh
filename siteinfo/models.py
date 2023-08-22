@@ -34,6 +34,10 @@ class Ticket(models.Model):
     phone = models.CharField(max_length=11, null=False, blank=False)
     text = models.CharField(max_length=500, null=False, blank=False)
     create_data = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self) -> str:
+        return f"{self.full_name} - {self.phone}"
+        
 
 
 class HomeHeader(models.Model):

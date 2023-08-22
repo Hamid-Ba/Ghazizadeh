@@ -1,8 +1,6 @@
 from django.contrib import admin
 from jalali_date.admin import (
     ModelAdminJalaliMixin,
-    StackedInlineJalaliMixin,
-    TabularInlineJalaliMixin,
 )
 
 from discount import models

@@ -1,6 +1,8 @@
 from django.contrib import admin
 from blog import models
-
+from jalali_date.admin import (
+    ModelAdminJalaliMixin,
+)
 
 class SubCategoryInline(admin.StackedInline):
     model = models.BlogCategory
@@ -40,17 +42,17 @@ class CategoryAdmin(admin.ModelAdmin):
         return queryset
 
 
-class SpecificationInline(admin.TabularInline):
-    model = models.Specification
-    extra = 1
+# class SpecificationInline(admin.TabularInline):
+#     model = models.Specification
+#     extra = 1
 
 
-class BlogAdmin(admin.ModelAdmin):
+class BlogAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
     list_display = ("title", "category", "publish_date")
     list_filter = ("category", "tags")
     search_fields = ("title", "short_desc", "desc")
 
-    inlines = [SpecificationInline]
+    # inlines = [SpecificationInline]
 
     fieldsets = (
         (
@@ -80,19 +82,19 @@ class BlogAdmin(admin.ModelAdmin):
         ),
     )
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        queryset = queryset.prefetch_related("specs")
+    # def get_queryset(self, request):
+    #     queryset = super().get_queryset(request)
+    #     queryset = queryset.prefetch_related("specs")
 
-        return queryset
+    #     return queryset
 
 
-class SpecificationAdmin(admin.ModelAdmin):
-    list_display = ("key", "type", "value", "blog")
-    list_filter = ("type",)
-    search_fields = ("key", "value", "blog__title")
+# class SpecificationAdmin(admin.ModelAdmin):
+#     list_display = ("key", "type", "value", "blog")
+#     list_filter = ("type",)
+#     search_fields = ("key", "value", "blog__title")
 
 
 admin.site.register(models.Blog, BlogAdmin)
 admin.site.register(models.BlogCategory, CategoryAdmin)
-admin.site.register(models.Specification, SpecificationAdmin)
+# admin.site.register(models.Specification, SpecificationAdmin)

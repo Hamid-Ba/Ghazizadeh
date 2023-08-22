@@ -16,12 +16,12 @@ class BlogCategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class SpecificationSerializer(serializers.ModelSerializer):
-    """Specification Serializer"""
+# class SpecificationSerializer(serializers.ModelSerializer):
+#     """Specification Serializer"""
 
-    class Meta:
-        model = models.Specification
-        fields = "__all__"
+#     class Meta:
+#         model = models.Specification
+#         fields = "__all__"
 
 
 class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
@@ -29,7 +29,7 @@ class BlogSerializer(TaggitSerializer, serializers.ModelSerializer):
 
     tags = TagListSerializerField()
     category = BlogCategorySerializer(many=False)
-    specs = SpecificationSerializer(many=True)
+    # specs = SpecificationSerializer(many=True)
     image = gallery_serializers.GallerySerializer(many=False)
 
     class Meta:

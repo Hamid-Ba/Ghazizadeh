@@ -100,39 +100,39 @@ class BlogModelTest(TestCase):
         self.assertEquals(related_name, "blogs")
 
 
-class SpecificationModelTest(TestCase):
-    """Blog Model Test"""
+# class SpecificationModelTest(TestCase):
+#     """Blog Model Test"""
 
-    @classmethod
-    def setUpTestData(cls):
-        category = create_category("Test")
-        models.Blog.objects.create(
-            title="TestBlog", slug="test-blog", category=category
-        )
+#     @classmethod
+#     def setUpTestData(cls):
+#         category = create_category("Test")
+#         models.Blog.objects.create(
+#             title="TestBlog", slug="test-blog", category=category
+#         )
 
-        # Set up non-modified objects used by all test methods
-        models.Specification.objects.create(
-            key="TestKey",
-            value="TestValue",
-            blog=models.Blog.objects.filter(title="TestBlog").first(),
-        )
+#         # Set up non-modified objects used by all test methods
+#         models.Specification.objects.create(
+#             key="TestKey",
+#             value="TestValue",
+#             blog=models.Blog.objects.filter(title="TestBlog").first(),
+#         )
 
-    def test_type_default_value(self):
-        spec = models.Specification.objects.get(id=1)
-        default_type = spec.type
-        self.assertEquals(default_type, "TS")
+#     def test_type_default_value(self):
+#         spec = models.Specification.objects.get(id=1)
+#         default_type = spec.type
+#         self.assertEquals(default_type, "TS")
 
-    def test_key_max_length(self):
-        spec = models.Specification.objects.get(id=1)
-        max_length = spec._meta.get_field("key").max_length
-        self.assertEquals(max_length, 125)
+#     def test_key_max_length(self):
+#         spec = models.Specification.objects.get(id=1)
+#         max_length = spec._meta.get_field("key").max_length
+#         self.assertEquals(max_length, 125)
 
-    def test_value_blank_false(self):
-        spec = models.Specification.objects.get(id=1)
-        blank = spec._meta.get_field("value").blank
-        self.assertFalse(blank)
+#     def test_value_blank_false(self):
+#         spec = models.Specification.objects.get(id=1)
+#         blank = spec._meta.get_field("value").blank
+#         self.assertFalse(blank)
 
-    def test_object_name(self):
-        spec = models.Specification.objects.get(id=1)
-        expected_object_name = f"{spec.blog.title}-{spec.key}"
-        self.assertEquals(expected_object_name, str(spec))
+#     def test_object_name(self):
+#         spec = models.Specification.objects.get(id=1)
+#         expected_object_name = f"{spec.blog.title}-{spec.key}"
+#         self.assertEquals(expected_object_name, str(spec))

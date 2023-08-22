@@ -88,18 +88,18 @@ class Blog(models.Model):
         return self.title
 
 
-class Specification(models.Model):
-    """Specification"""
+# class Specification(models.Model):
+#     """Specification"""
 
-    class Type(models.TextChoices):
-        TS = "TS", "مشخصات فنی"
-        FE = "FE", "امکانات و تجهیزات"
+#     class Type(models.TextChoices):
+#         TS = "TS", "مشخصات فنی"
+#         FE = "FE", "امکانات و تجهیزات"
 
-    type = models.CharField(max_length=2, default=Type.TS, choices=Type.choices)
-    key = models.CharField(max_length=125, null=False, blank=False)
-    value = models.TextField(null=False, blank=False)
+#     type = models.CharField(max_length=2, default=Type.TS, choices=Type.choices)
+#     key = models.CharField(max_length=125, null=False, blank=False)
+#     value = models.TextField(null=False, blank=False)
 
-    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="specs")
+#     blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="specs")
 
-    def __str__(self):
-        return f"{self.blog.title}-{self.key}"
+#     def __str__(self):
+#         return f"{self.blog.title}-{self.key}"
