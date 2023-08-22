@@ -10,6 +10,10 @@ class SpecificationInline(admin.TabularInline):
 
 
 class CarAdmin(admin.ModelAdmin):
+    list_display = ["id", "title", "brand"]
+    list_display_links = ["id", "title"]
+    search_fields = ["title"]
+    list_filter = ("brand",)
     inlines = [SpecificationInline]
 
 
