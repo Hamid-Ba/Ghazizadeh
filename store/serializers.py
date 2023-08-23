@@ -1,5 +1,7 @@
+import json
 from uuid import uuid4
 from rest_framework import serializers
+from django.core.serializers import serialize
 
 from store import models
 from brand import serializers as brand_serial
@@ -78,7 +80,15 @@ class ProductSerializer(serializers.ModelSerializer):
     gallery = gallery_serial.GallerySerializer(many=True)
     specs = SpecificationsSerializer(many=True)
     comments = CommentSerializer(many=True)
-
+    
+    domain = serializers.SerializerMethodField()
+    
+    def get_domain(self, obj):
+        request = self.context.get("request")
+        url = request.build_absolute_uri(obj.pk).split("/")
+        url = f"{url[0]}//{url[2]}"
+        return url
+    
     class Meta:
         """Meta Class"""
 
@@ -93,10 +103,9 @@ class ProductSerializer(serializers.ModelSerializer):
             )
         )
         rep["comments"] = instance.get_active_comments()
-        if len(relational_products):
-            rep["relational_products"] = relational_products
-        else:
-            rep["relational_products"] = []
+        rep["relational_products"] = []       
+        [rep["relational_products"].append(ProductListSerializer(instance=prod).data) for prod in relational_products if len(relational_products)]    
+        
         return rep
 
 

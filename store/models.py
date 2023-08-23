@@ -64,8 +64,7 @@ class ProductManager(models.Manager):
         return (
             self.filter(category=cat_id, count__gte=2)
             .exclude(id=product_id)
-            .order_by("-order_count")
-            .values()[:8]
+            .order_by("-order_count").all()[:8]
         )
 
 
