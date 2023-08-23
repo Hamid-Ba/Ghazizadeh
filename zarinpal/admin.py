@@ -4,7 +4,8 @@ from jalali_date.admin import (
     ModelAdminJalaliMixin,
 )
 
-class PaymentAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
+
+class PaymentAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     """Payment admin"""
 
     list_display = [

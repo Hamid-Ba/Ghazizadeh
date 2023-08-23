@@ -4,6 +4,7 @@ from jalali_date.admin import (
     ModelAdminJalaliMixin,
 )
 
+
 class SubCategoryInline(admin.StackedInline):
     model = models.BlogCategory
     extra = 0
@@ -47,7 +48,7 @@ class CategoryAdmin(admin.ModelAdmin):
 #     extra = 1
 
 
-class BlogAdmin(ModelAdminJalaliMixin,admin.ModelAdmin):
+class BlogAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = ("title", "category", "publish_date")
     list_filter = ("category", "tags")
     search_fields = ("title", "short_desc", "desc")

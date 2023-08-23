@@ -80,7 +80,8 @@ class SearchProductsAPI(generics.ListAPIView):
     filterset_fields = ["brand", "category"]
     search_fields = ["title", "category__title"]
     ordering_fields = ["created_date", "order_count", "price"]
-    
+
+
 # class ProductsCommentsApi(generics.ListAPIView):
 #     queryset = models.Comment.objects.filter(is_active=True)
 #     serializer_class = serializers.CommentSerializer

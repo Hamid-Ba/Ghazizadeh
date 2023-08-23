@@ -66,7 +66,7 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id" ,"title", "category", "brand", "price", "count", "order_count")
+    list_display = ("id", "title", "category", "brand", "price", "count", "order_count")
     list_display_links = ("id", "title")
     list_filter = ("category", "brand")
     list_editable = ["count"]

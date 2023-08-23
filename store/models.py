@@ -64,7 +64,8 @@ class ProductManager(models.Manager):
         return (
             self.filter(category=cat_id, count__gte=2)
             .exclude(id=product_id)
-            .order_by("-order_count").all()[:8]
+            .order_by("-order_count")
+            .all()[:8]
         )
 
 
@@ -210,6 +211,6 @@ class OrderItem(models.Model):
     count = models.IntegerField(validators=[MinValueValidator(1)])
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
-    
+
     def __str__(self):
         return f"Order #{self.product_id}-{self.title}"
