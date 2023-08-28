@@ -12,8 +12,9 @@ class OrderServices:
         order = get_object_or_404(models.Order, pk=order_id)
         order_items = order.items.all()
 
-        code = order.discount
-        code.code_used()
+        if order.discount:
+            code = order.discount
+            code.code_used()
 
         for item in order_items:
             product_item = models.Product.objects.filter(id=item.product_id)

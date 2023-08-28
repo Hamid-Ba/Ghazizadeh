@@ -124,32 +124,36 @@ class CreateOrderApiView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         user = self.request.user
         request.data["user"] = user.id
-        serializer = self.serializer_class(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=user)
+        try :
+            serializer = self.serializer_class(data=request.data)
+            if serializer.is_valid():
+                serializer.save(user=user)
 
-            if settings.DEBUG:
-                domain = Site.objects.filter(domain__contains="127").first()
-                req_url = (
-                    f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
-                )
-                return Response(req_url, status=status.HTTP_201_CREATED)
+                if settings.DEBUG:
+                    domain = Site.objects.filter(domain__contains="127").first()
+                    req_url = (
+                        f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                    )
+                    return Response(req_url, status=status.HTTP_201_CREATED)
 
-            else:
-                domain = Site.objects.filter(domain__contains="api.ghazizadeh")
-
-                if domain.exists():
-                    domain = domain.first()
-                    http = "https"
                 else:
-                    domain = "87.248.153.97:8000"
-                    http = "http"
-                req_url = f"{http}://{domain}/api/payment/place_order/{serializer.data['id']}/"
+                    domain = Site.objects.filter(domain__contains="api.ghazizadeh")
 
-            return redirect(req_url)
-            # return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    if domain.exists():
+                        domain = domain.first()
+                        http = "https"
+                    else:
+                        domain = "87.248.153.97:8000"
+                        http = "http"
+                    req_url = f"{http}://{domain}/api/payment/place_order/{serializer.data['id']}/"
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                return redirect(req_url)
+                # return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except ValueError as e:
+            error_message = str(e)  # Get the error message from the exception
+            return Response({"message": error_message}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderViewSet(
