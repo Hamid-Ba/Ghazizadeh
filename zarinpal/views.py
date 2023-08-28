@@ -77,9 +77,10 @@ class VerifyOrderView(APIView):
         payment = get_object_or_404(Payment, authority=authority)
 
         if res_data["Status"] != "OK":
-            payment.status = 3
-            payment.save()
-            order_service.delete_order(payment.order.id)
+            if not payment.is_payed:
+                payment.status = 3
+                payment.save()
+                order_service.delete_order(payment.order.id)
             return redirect(FRONT_VERIFY + "?status=CANCELLED")
         try:
             code, message, ref_id = zarin_pal.payment_verification(
