@@ -9,12 +9,12 @@ class ProductServices:
 
     def get_available_products(self):
         """Return List Of Product With Available Count Greater Than 2"""
-        return self.products.filter(count__gte=2)
+        return self.products.all()
 
     def get_relational_products(self, product_id):
         product = self.products.filter(id=product_id).first()
         return (
-            self.products.filter(category=product.category, count__gte=2)
+            self.products.filter(category=product.category)
             .exclude(id=product_id)
             .order_by("-order_count")
             .values()[:8]

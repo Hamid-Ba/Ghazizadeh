@@ -69,7 +69,7 @@ class ProductListSerializer(serializers.ModelSerializer):
         """Meta Class"""
 
         model = models.Product
-        fields = ["id", "title", "price", "category", "brand", "gallery"]
+        fields = ["id", "title", "price", "category", "brand", "gallery", "technical_number"]
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -156,6 +156,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         for item in items:
             order.items.create(
                 product_id=item["product_id"],
+                technical_number=item["technical_number"],
                 brand=item["brand"],
                 title=item["title"],
                 image_url=item["image_url"],

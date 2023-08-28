@@ -62,7 +62,7 @@ class ProductManager(models.Manager):
     def get_relational_products_by_category(self, product_id, cat_id):
         """return products in same category"""
         return (
-            self.filter(category=cat_id, count__gte=2)
+            self.filter(category=cat_id)
             .exclude(id=product_id)
             .order_by("-order_count")
             .all()[:8]
@@ -77,6 +77,7 @@ class Product(models.Model):
         max_digits=12, decimal_places=0, default_currency="IRR", null=False
     )
     desc = RichTextField(blank=True, null=True)
+    technical_number = models.CharField(max_length=125, null=True, blank=True)
     count = models.IntegerField(default=0)
     order_count = models.IntegerField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -208,6 +209,7 @@ class OrderItem(models.Model):
     price = MoneyField(
         max_digits=10, decimal_places=0, default_currency="IRR", null=False
     )
+    technical_number = models.CharField(max_length=125, null=True, blank=True)
     count = models.IntegerField(validators=[MinValueValidator(1)])
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
