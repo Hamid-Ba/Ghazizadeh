@@ -78,8 +78,8 @@ class SearchProductsAPI(generics.ListAPIView):
         filters.OrderingFilter,
     ]
     filterset_fields = ["brand", "category"]
-    search_fields = ["title", "category__title"]
     ordering_fields = ["created_date", "order_count", "price"]
+    search_fields = ["title", "technical_number", "category__title"]
 
 
 # class ProductsCommentsApi(generics.ListAPIView):
