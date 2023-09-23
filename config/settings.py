@@ -77,7 +77,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[""])
+CSRF_TRUSTED_ORIGINS = ["http://87.248.153.97:8080", "http://87.248.153.97", "https://*.127.0.0.1", "http://*.127.0.0.1", "http://127.0.0.1:3000", "http://localhost:3000", "http://localhost:8080"]
 CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = "config.urls"
 
