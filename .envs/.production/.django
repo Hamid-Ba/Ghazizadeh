@@ -2,3 +2,5 @@ SIGNING_KEY=AehY7up6zVl7bgG1WgK2Ze1OIM7KomoZ9i3CXQe5H61vM-q84h4
 DJANGO_SECRET_KEY=django-insecure-f_jv#kwqg+6hf!s7u5op)pz*c$+9r#u$xsylc*lg9bdochpz0q
 
 DJANGO_DEBUG=False
+
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000','https://localhost:3000','http://127.0.0.1:3000','https://127.0.0.1:3000','http://*.127.0.0.1','https://*.127.0.0.1','http://87.248.153.97','https://87.248.153.97']

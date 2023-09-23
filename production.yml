@@ -17,7 +17,7 @@ services:
       - ./.envs/.production/.django
       - ./.envs/.production/.postgres
     depends_on:
-      - postgres
+      - ghazizadeh-postgres
     networks:
       - devops_proj
 
