@@ -11,7 +11,10 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
+import environ
 from pathlib import Path
+
+env = environ.Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +24,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-f_jv#kwqg+6hf!s7u5op)pz*c$+9r#u$xsylc*lg9bdochpz0q"
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="None")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DJANGO_DEBUG", False)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 SITE_ID = 1
 
@@ -123,17 +126,28 @@ JALALI_DATE_DEFAULTS = {
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "Ghazizadeh",
-        "HOST": "localhost",
-        "USER": "postgres",
-        "PASSWORD": "09155490422HamidBa",
-        "PORT": "5432",
-    }
-}
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "Ghazizadeh",
+#         "HOST": "localhost",
+#         "USER": "postgres",
+#         "PASSWORD": "09155490422HamidBa",
+#         "PORT": "5432",
+#     }
+# }
 
+if DEBUG:
+    DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": BASE_DIR / "db.sqlite3",
+    }
+}    
+else:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    DATABASES = {"default": env.db("DATABASE_URL")}
+    DATABASES["default"]["ATOMIC_REQUESTS"] = True   
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

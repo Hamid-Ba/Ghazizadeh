@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  ghazizadeh-api:
+    build:
+      context: .
+      dockerfile: ./docker/production/django/DockerFile
+    command: /start
+    container_name: ghazizadeh-api
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    expose:
+      - "8000"
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+    depends_on:
+      - postgres
+    networks:
+      - devops_proj
+
+  postgres:
+    image: postgres:13-alpine
+    container_name: ghazizadeh-postgres
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.production/.postgres
+    networks:
+      - devops_proj
+
+  nginx:
+    image: nginx
+    container_name: ghazizadeh-nginx
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+      - static_volume:/home/app/static
+      - media_volume:/home/app/media
+    depends_on:
+      - ghazizadeh-api
+    networks:
+      - devops_proj
+
+networks:
+  devops_proj:
+    driver: bridge
+
+volumes:
+  production_postgres_data: {}
+  static_volume:
+  media_volume:

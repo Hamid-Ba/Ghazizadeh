@@ -10,7 +10,5 @@ kavenegar==1.1.2
 zeep==3.4.0
 django-taggit==3.1.0
 django-jalali-date
-
-# Clean Coding
-flake8
-black
+django-environ==0.8.1
+django-filter

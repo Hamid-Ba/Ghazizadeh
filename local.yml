@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+  ghazizadeh-api:
+    build:
+      context: .
+      dockerfile: ./docker/local/django/DockerFile
+    command: /start
+    container_name: ghazizadeh-api
+    volumes:
+      - .:/app
+      - static_volume:/app/static
+      - media_volume:/app/media
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.envs/.local/.django
+    networks:
+      - devops_proj
+
+networks:
+  devops_proj:
+    driver: bridge
+
+volumes:
+  static_volume:
+  media_volume:
