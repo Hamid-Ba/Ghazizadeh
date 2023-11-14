@@ -124,16 +124,14 @@ class CreateOrderApiView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         user = self.request.user
         request.data["user"] = user.id
-        try :
+        try:
             serializer = self.serializer_class(data=request.data)
             if serializer.is_valid():
                 serializer.save(user=user)
 
                 if settings.DEBUG:
                     domain = Site.objects.filter(domain__contains="127").first()
-                    req_url = (
-                        f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
-                    )
+                    req_url = f"http://{domain}/api/payment/place_order/{serializer.data['id']}/"
                     return Response(req_url, status=status.HTTP_201_CREATED)
 
                 else:
@@ -153,7 +151,9 @@ class CreateOrderApiView(generics.CreateAPIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         except ValueError as e:
             error_message = str(e)  # Get the error message from the exception
-            return Response({"message": error_message}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message": error_message}, status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class OrderViewSet(

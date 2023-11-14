@@ -69,7 +69,15 @@ class ProductListSerializer(serializers.ModelSerializer):
         """Meta Class"""
 
         model = models.Product
-        fields = ["id", "title", "price", "category", "brand", "gallery", "technical_number"]
+        fields = [
+            "id",
+            "title",
+            "price",
+            "category",
+            "brand",
+            "gallery",
+            "technical_number",
+        ]
 
 
 class ProductSerializer(serializers.ModelSerializer):

@@ -66,7 +66,16 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "title", "technical_number", "category", "brand", "price", "count", "order_count")
+    list_display = (
+        "id",
+        "title",
+        "technical_number",
+        "category",
+        "brand",
+        "price",
+        "count",
+        "order_count",
+    )
     list_display_links = ("id", "title")
     list_filter = ("category", "brand")
     list_editable = ["count"]
@@ -130,7 +139,15 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("order_id", "technical_number", "brand", "title", "price", "count", "image_url")
+    list_display = (
+        "order_id",
+        "technical_number",
+        "brand",
+        "title",
+        "price",
+        "count",
+        "image_url",
+    )
 
 
 class PaymentMethodAdmin(admin.ModelAdmin):
