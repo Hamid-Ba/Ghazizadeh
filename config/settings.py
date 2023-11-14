@@ -77,7 +77,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-CSRF_TRUSTED_ORIGINS = ["http://87.248.153.97:8080", "http://87.248.153.97", "https://*.127.0.0.1", "http://*.127.0.0.1", "http://127.0.0.1:3000", "http://localhost:3000", "http://localhost:8080"]
+CSRF_TRUSTED_ORIGINS = ["http://87.248.153.97:8080", "http://87.248.153.97", "https://apighazi.cafesiran.ir","http://127.0.0.1:8080", "http://127.0.0.1:8000", "https://*.127.0.0.1", "http://*.127.0.0.1", "http://127.0.0.1:3000", "http://localhost:3000", "http://localhost:8080"]
 CORS_ALLOW_ALL_ORIGINS = True
 ROOT_URLCONF = "config.urls"
 
@@ -184,10 +184,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "/static/"
+DOMAIN = env("DOMAIN", default="http://127.0.0.1:8080")
+
+STATIC_URL = f"{DOMAIN}/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
-MEDIA_URL = "/media/"
+MEDIA_URL = f'{DOMAIN}/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 CKEDITOR_CONFIGS = {
