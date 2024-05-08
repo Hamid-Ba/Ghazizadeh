@@ -64,6 +64,8 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ("id", "full_name")
     list_editable = ("is_active",)
 
+class GalleryInline(admin.TabularInline):
+    model = models.Product.gallery.through
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -80,7 +82,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("category", "brand")
     list_editable = ["count"]
     search_fields = ("title", "category__title", "brand__title", "technical_number")
-
+    filter_horizontal = ('gallery',)
     inlines = [SpecificationInline]
 
     # fieldsets = (
