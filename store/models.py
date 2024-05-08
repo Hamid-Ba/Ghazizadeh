@@ -163,7 +163,7 @@ class Order(models.Model):
         REJECTED = "C", "لغو شده / پر داخت ناموفق"
         DOING = "DD", "در دست اقدام"
 
-    code = models.BigIntegerField(blank=False, null=True)
+    code = models.CharField(max_length=225, blank=False, null=True)
     state = models.CharField(
         max_length=2, default=OrderState.PENDING, choices=OrderState.choices
     )
