@@ -158,13 +158,14 @@ class PaymentMethod(models.Model):
 
 class Order(models.Model):
     class OrderState(models.TextChoices):
-        PENDING = "P", "در صف انتظار"
-        CONFIRMED = "D", "تحویل داده شده"
-        REJECTED = "C", "لغو شده"
+        PENDING = "P", "در انتظار بررسی (پرداخت شده)"
+        CONFIRMED = "D", "تکمیل شده"
+        REJECTED = "C", "لغو شده / پر داخت ناموفق"
+        DOING = "DD", "در دست اقدام"
 
-    code = models.CharField(max_length=5, blank=False, null=True)
+    code = models.BigIntegerField(blank=False, null=True)
     state = models.CharField(
-        max_length=1, default=OrderState.PENDING, choices=OrderState.choices
+        max_length=2, default=OrderState.PENDING, choices=OrderState.choices
     )
     total_price = MoneyField(
         max_digits=10, decimal_places=0, default_currency="IRR", null=False
@@ -172,9 +173,21 @@ class Order(models.Model):
     phone = models.CharField(
         max_length=11, blank=False, null=False, validators=[validators.PhoneValidator]
     )
-    registered_date = models.DateTimeField(auto_now_add=True, editable=False)
+    registered_date = models.DateTimeField(
+        auto_now_add=True, editable=False, verbose_name="تاریخ ثبت سفارش"
+    )
     address = models.ForeignKey(
         address_models.Address, on_delete=models.DO_NOTHING, related_name="orders"
+    )
+
+    confirmed_date = models.DateTimeField(
+        null=True, blank=True, editable=True, verbose_name="تاریخ تکمیل شده"
+    )
+    rejected_date = models.DateTimeField(
+        null=True, blank=True, editable=True, verbose_name="تاریخ لغو شده"
+    )
+    doing_date = models.DateTimeField(
+        null=True, blank=True, editable=True, verbose_name="تاریخ در دست اقدام"
     )
 
     user = models.ForeignKey(
@@ -205,7 +218,7 @@ class OrderItem(models.Model):
     product_id = models.BigIntegerField(null=False, blank=False)
     brand = models.CharField(max_length=125, null=False, blank=False)
     title = models.CharField(max_length=125, null=False, blank=False)
-    image_url = models.CharField(max_length=250, null=False, blank=False)
+    # image_url = models.CharField(max_length=250, null=False, blank=False)
     price = MoneyField(
         max_digits=10, decimal_places=0, default_currency="IRR", null=False
     )

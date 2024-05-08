@@ -179,8 +179,12 @@ class CreateOrderSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         """Custom Create"""
         items = validated_data.pop("items", [])
-        code = str(uuid4())[:5]
-
+        # code = str(uuid4())[:5]
+        if models.Order.objects.count() == 0:
+            code = 1
+        else:
+            code = models.Order.objects.last().code + 1
+            
         order = models.Order.objects.create(code=code, **validated_data)
         self._add_items(order, items)
         order.save()

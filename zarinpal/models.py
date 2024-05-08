@@ -14,9 +14,9 @@ class Payment(models.Model):
     class PaymentStatus(models.IntegerChoices):
         """Payment Status Enums"""
 
-        PAYMENT_CREATED = 1, "Payment Created"
-        PAYMENT_DONE = 2, "Payment Done"
-        PAYMENT_CANCELLED = 3, "Payment Cancelled"
+        PAYMENT_CREATED = 1, "در حال پرداخت"
+        PAYMENT_DONE = 2, "پرداخت انجام شد"
+        PAYMENT_CANCELLED = 3, "پرداخت لغو شد"
 
     pay_amount = MoneyField(
         max_digits=10, decimal_places=0, default_currency="IRR", null=False

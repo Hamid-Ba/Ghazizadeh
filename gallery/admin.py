@@ -16,4 +16,5 @@ class GalleryAdmin(admin.ModelAdmin):
     def image_path(self, obj):
         return obj.image.path
 
+
 admin.site.register(models.Gallery, GalleryAdmin)

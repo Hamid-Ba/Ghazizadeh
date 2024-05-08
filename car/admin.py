@@ -14,7 +14,7 @@ class CarAdmin(admin.ModelAdmin):
     list_display_links = ["id", "title"]
     search_fields = ["title"]
     list_filter = ("brand",)
-    filter_horizontal = ('gallery',)
+    filter_horizontal = ("gallery",)
     inlines = [SpecificationInline]
 
 

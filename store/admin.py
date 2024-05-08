@@ -2,6 +2,10 @@ from django.contrib import admin
 from django import forms
 from store import models
 
+from jalali_date.admin import (
+    ModelAdminJalaliMixin,
+)
+
 
 class SubCategoryInline(admin.StackedInline):
     model = models.Category
@@ -64,8 +68,10 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ("id", "full_name")
     list_editable = ("is_active",)
 
+
 class GalleryInline(admin.TabularInline):
     model = models.Product.gallery.through
+
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -82,7 +88,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ("category", "brand")
     list_editable = ["count"]
     search_fields = ("title", "category__title", "brand__title", "technical_number")
-    filter_horizontal = ('gallery',)
+    filter_horizontal = ("gallery",)
     inlines = [SpecificationInline]
 
     # fieldsets = (
@@ -122,18 +128,25 @@ class ProductAdmin(admin.ModelAdmin):
 
 class OrderItemInline(admin.TabularInline):
     model = models.OrderItem
+    fields = (
+        "technical_number",
+        "brand",
+        "title",
+        "count",
+    )
     extra = 1
 
 
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
     list_display = (
         "code",
-        "address",
         "state",
         "total_price",
         "user",
         "phone",
+        "registered_date",
     )
+    # list_editable = ["registered_date"]
     inlines = [
         OrderItemInline,
     ]
@@ -148,7 +161,7 @@ class OrderItemAdmin(admin.ModelAdmin):
         "title",
         "price",
         "count",
-        "image_url",
+        # "image_url",
     )
 
 
