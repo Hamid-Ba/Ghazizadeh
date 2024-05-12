@@ -2,10 +2,11 @@
 site info modules views
 """
 
-from rest_framework import generics
+from rest_framework import generics, mixins, viewsets, views
 from rest_framework.response import Response
 
 from siteinfo import models, serializers
+from config import pagination
 
 
 class AboutUsView(generics.RetrieveAPIView):
@@ -63,3 +64,17 @@ class CreateTicketAPI(generics.CreateAPIView):
 
     queryset = models.Ticket.objects.all()
     serializer_class = serializers.TicketSerializer
+
+
+class FAQCategoryViewSet(mixins.RetrieveModelMixin,
+                          mixins.ListModelMixin,
+                          viewsets.GenericViewSet):
+    queryset = models.FAQCategory.objects.all()
+    serializer_class = serializers.FAQCategorySerializer
+    
+
+class FAQViewSet(mixins.RetrieveModelMixin,
+                          mixins.ListModelMixin,
+                          viewsets.GenericViewSet):
+    queryset = models.FAQ.objects.all()
+    serializer_class = serializers.FAQSerializer

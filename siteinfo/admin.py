@@ -64,9 +64,20 @@ class SliderAndBannerAdmin(admin.ModelAdmin):
     list_editable = ["is_slider"]
 
 
+class FAQCategoryAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
+
+class FAQAdmin(admin.ModelAdmin):
+    list_display = ('question', 'category',)
+    list_filter = ('category',)
+
+
 admin.site.register(models.Ticket)
+admin.site.register(models.FAQ, FAQAdmin)
 admin.site.register(models.Footer, FooterAdmin)
 admin.site.register(models.AboutUs, AboutUsAdmin)
 admin.site.register(models.ContactUs, ContactUsAdmin)
 admin.site.register(models.HomeHeader, HomeHeaderAdmin)
+admin.site.register(models.FAQCategory, FAQCategoryAdmin)
 admin.site.register(models.SliderAndBanner, SliderAndBannerAdmin)

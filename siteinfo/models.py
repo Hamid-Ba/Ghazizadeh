@@ -5,7 +5,6 @@ site info module models
 from django.db import models
 from ckeditor.fields import RichTextField
 
-
 class AboutUs(models.Model):
     """About Us Model"""
 
@@ -114,3 +113,18 @@ class SliderAndBanner(models.Model):
     class Meta:
         verbose_name = "Slider & Banner"
         verbose_name_plural = "Slider & Banner"
+
+
+class FAQCategory(models.Model):
+    title = models.CharField(max_length=125)
+
+    def __str__(self):
+        return self.title
+
+class FAQ(models.Model):
+    category = models.ForeignKey(FAQCategory, on_delete=models.CASCADE, related_name="faqs")
+    question = models.CharField(max_length=500)
+    answer = RichTextField()
+
+    def __str__(self):
+        return self.question

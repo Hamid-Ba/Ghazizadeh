@@ -1,12 +1,18 @@
 from django.urls import (
-    path,
+    path, include
 )
+from rest_framework.routers import DefaultRouter
 
 from siteinfo import views
 
 app_name = "site_info"
 
+router = DefaultRouter()
+router.register("faq", views.FAQViewSet)
+router.register("faq_category", views.FAQCategoryViewSet)
+
 urlpatterns = [
+    path("", include(router.urls)),
     path("about_us/", views.AboutUsView.as_view(), name="about_us"),
     path("contact_us/", views.ContactUsView.as_view(), name="contact_us"),
     path("home_header/", views.HomeHeaderView.as_view(), name="home_header"),

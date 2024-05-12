@@ -167,7 +167,7 @@ class CreateOrderSerializer(serializers.ModelSerializer):
                 technical_number=item["technical_number"],
                 brand=item["brand"],
                 title=item["title"],
-                image_url=item["image_url"],
+                # image_url=item["image_url"],
                 price=item["price"],
                 count=item["count"],
             )

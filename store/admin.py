@@ -6,6 +6,8 @@ from jalali_date.admin import (
     ModelAdminJalaliMixin,
 )
 
+from store.views import generate_pdf_invoice
+
 
 class SubCategoryInline(admin.StackedInline):
     model = models.Category
@@ -129,7 +131,7 @@ class ProductAdmin(admin.ModelAdmin):
 class OrderItemInline(admin.TabularInline):
     model = models.OrderItem
     fields = (
-        "technical_number",
+        "product_id",
         "brand",
         "title",
         "count",
@@ -147,10 +149,19 @@ class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         "registered_date",
     )
     # list_editable = ["registered_date"]
+    actions = ['generate_pdf_invoice']
     inlines = [
         OrderItemInline,
     ]
     search_fields = ["code", "phone"]
+    
+    def generate_pdf_invoice(self, request, queryset):
+        for order in queryset:
+            # Call the view to generate PDF for each selected order
+            response = generate_pdf_invoice(request, order.id)
+            return response
+        
+    generate_pdf_invoice.short_description = "Generate PDF Invoice"
 
 
 class OrderItemAdmin(admin.ModelAdmin):

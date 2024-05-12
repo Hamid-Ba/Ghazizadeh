@@ -80,6 +80,7 @@ class Product(models.Model):
     technical_number = models.CharField(max_length=125, null=True, blank=True)
     count = models.IntegerField(default=0)
     order_count = models.IntegerField(default=0)
+    weight = models.FloatField(default=0)
     created_date = models.DateTimeField(auto_now_add=True)
 
     gallery = models.ManyToManyField(gallery_models.Gallery, related_name="products")
@@ -215,12 +216,12 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    product_id = models.BigIntegerField(null=False, blank=False)
-    brand = models.CharField(max_length=125, null=False, blank=False)
-    title = models.CharField(max_length=125, null=False, blank=False)
+    product_id = models.BigIntegerField(null=True, blank=True)
+    brand = models.CharField(max_length=125, null=True, blank=True)
+    title = models.CharField(max_length=125, null=True, blank=True)
     # image_url = models.CharField(max_length=250, null=False, blank=False)
     price = MoneyField(
-        max_digits=10, decimal_places=0, default_currency="IRR", null=False
+        max_digits=10, decimal_places=0, default_currency="IRR", null=True
     )
     technical_number = models.CharField(max_length=125, null=True, blank=True)
     count = models.IntegerField(validators=[MinValueValidator(1)])

@@ -64,3 +64,22 @@ class TicketSerializer(serializers.ModelSerializer):
 
         model = models.Ticket
         fields = "__all__"
+
+class FAQSerializer(serializers.ModelSerializer):
+    """FAQ Serializer"""
+    
+    class Meta:
+        """Meta Class"""
+        model = models.FAQ
+        fields = '__all__'
+        
+class FAQCategorySerializer(serializers.ModelSerializer):
+    """FAQCategory Serializer"""
+    
+    faqs = FAQSerializer(many=True)
+    
+    class Meta:
+        """Meta Class"""
+        
+        model = models.FAQCategory
+        fields = '__all__'
