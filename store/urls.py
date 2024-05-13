@@ -29,4 +29,9 @@ urlpatterns = [
     # ),
     path("place_order", views.CreateOrderApiView.as_view(), name="place_order"),
     path("comment", views.CreateCommentApi.as_view(), name="create_comment"),
+    path(
+        "favorite-products/",
+        views.FavoriteProductListCreateView.as_view(),
+        name="favorite-product-list-create",
+    ),
 ]

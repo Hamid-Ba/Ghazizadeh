@@ -24,7 +24,7 @@ class CategoryModelTest(TestCase):
     def test_title_label(self):
         category = models.BlogCategory.objects.filter(title="TestCategory").first()
         field_label = category._meta.get_field("title").verbose_name
-        self.assertEquals(field_label, "title")
+        self.assertEquals(field_label, "عنوان")
 
     def test_image_alt_max_length(self):
         category = models.BlogCategory.objects.filter(title="TestCategory").first()
@@ -57,7 +57,7 @@ class BlogModelTest(TestCase):
     def test_title_label(self):
         blog = models.Blog.objects.filter(title="TestBlog").first()
         field_label = blog._meta.get_field("title").verbose_name
-        self.assertEquals(field_label, "title")
+        self.assertEquals(field_label, "عنوان")
 
     def test_slug_max_length(self):
         blog = models.Blog.objects.filter(title="TestBlog").first()

@@ -73,6 +73,7 @@ class ProductListSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "price",
+            "short_desc",
             "category",
             "brand",
             "gallery",
@@ -180,9 +181,9 @@ class CreateOrderSerializer(serializers.ModelSerializer):
         """Custom Create"""
         items = validated_data.pop("items", [])
         # code = str(uuid4())[:5]
-        
+
         code = str(models.Order.objects.count())
-            
+
         order = models.Order.objects.create(code=code, **validated_data)
         self._add_items(order, items)
         order.save()
@@ -195,3 +196,19 @@ class OrderSerializer(CreateOrderSerializer):
 
     address = address_serial.AddressSerializer(many=False)
     payment_method = PaymentMethodSerializer(many=False)
+
+
+class CreateFavoriteProductSerializer(serializers.ModelSerializer):
+    product = serializers.PrimaryKeyRelatedField(queryset=models.Product.objects.all())
+
+    class Meta:
+        model = models.FavoriteProduct
+        fields = "__all__"
+        read_only_fields = ["user"]
+
+
+class FavoriteProductSerializer(CreateFavoriteProductSerializer):
+    product = ProductListSerializer(many=False)
+
+    class Meta(CreateFavoriteProductSerializer.Meta):
+        pass

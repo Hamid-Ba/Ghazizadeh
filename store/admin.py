@@ -1,12 +1,14 @@
 from django.contrib import admin
 from django import forms
 from store import models
+from django.utils import timezone
+from django.utils.translation import activate, gettext_lazy as _
 
 from jalali_date.admin import (
     ModelAdminJalaliMixin,
 )
 
-from store.views import generate_pdf_invoice
+# from store.views import generate_pdf_invoice
 
 
 class SubCategoryInline(admin.StackedInline):
@@ -148,20 +150,25 @@ class OrderAdmin(ModelAdminJalaliMixin, admin.ModelAdmin):
         "phone",
         "registered_date",
     )
+    def registered_date(self, obj):
+        activate('fa')  # Activate Persian language
+        return timezone.localtime(obj.registered_date).strftime('%Y-%m-%d %H:%M:%S')
+
+    registered_date.short_description = _('Persian Created At')
     # list_editable = ["registered_date"]
-    actions = ['generate_pdf_invoice']
+    # actions = ["generate_pdf_invoice"]
     inlines = [
         OrderItemInline,
     ]
     search_fields = ["code", "phone"]
-    
-    def generate_pdf_invoice(self, request, queryset):
-        for order in queryset:
-            # Call the view to generate PDF for each selected order
-            response = generate_pdf_invoice(request, order.id)
-            return response
-        
-    generate_pdf_invoice.short_description = "Generate PDF Invoice"
+
+    # def generate_pdf_invoice(self, request, queryset):
+    #     for order in queryset:
+    #         # Call the view to generate PDF for each selected order
+    #         response = generate_pdf_invoice(request, order.id)
+    #         return response
+
+    # generate_pdf_invoice.short_description = "Generate PDF Invoice"
 
 
 class OrderItemAdmin(admin.ModelAdmin):
@@ -181,6 +188,7 @@ class PaymentMethodAdmin(admin.ModelAdmin):
     list_display_links = ("id", "title")
 
 
+admin.site.register(models.FavoriteProduct)
 admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.Product, ProductAdmin)
 admin.site.register(models.Comment, CommentAdmin)

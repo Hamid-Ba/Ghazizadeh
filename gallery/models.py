@@ -1,7 +1,7 @@
 import os
 from django.db import models
 from uuid import uuid4
-
+from django.utils.translation import gettext_lazy as _
 # Create your models here.
 
 
@@ -16,8 +16,8 @@ def gallery_image_file_path(instance, filename):
 class Gallery(models.Model):
     """Gallery model"""
 
-    title = models.CharField(max_length=125, blank=True, null=True)
-    image = models.ImageField(null=False, upload_to=gallery_image_file_path)
+    title = models.CharField(max_length=125, blank=True, null=True, verbose_name="عنوان")
+    image = models.ImageField(null=False, upload_to=gallery_image_file_path, verbose_name="تصویر")
 
     def __str__(self):
         if self.title:
@@ -25,4 +25,5 @@ class Gallery(models.Model):
         return self.image
 
     class Meta:
-        verbose_name_plural = "Galleries"
+        verbose_name = _("گالری")
+        verbose_name_plural = _("گالری")

@@ -190,59 +190,81 @@ class PaymentMethodViewSet(
     serializer_class = serializers.PaymentMethodSerializer
 
 
-def generate_pdf_invoice(request, order_id):
-    # Get the order and its associated items
-    order = models.Order.objects.get(pk=order_id)
-    items = order.items.all()
+# def generate_pdf_invoice(request, order_id):
+#     # Get the order and its associated items
+#     order = models.Order.objects.get(pk=order_id)
+#     items = order.items.all()
 
-    # Create a PDF document
-    buffer = BytesIO()
-    pdf = SimpleDocTemplate(buffer, pagesize=letter)
-    data = []
+#     # Create a PDF document
+#     buffer = BytesIO()
+#     pdf = SimpleDocTemplate(buffer, pagesize=letter)
+#     data = []
 
-    # Load the Persian font
-    font_path = "store/Vazir.ttf"
-    addMapping('Vazir', 0, 0, font_path)  # Use your desired font name
+#     # Load the Persian font
+#     font_path = "store/Vazir.ttf"
+#     addMapping("Vazir", 0, 0, font_path)  # Use your desired font name
 
-    # Define styles with the Persian font
-    styles = getSampleStyleSheet()
-    style_heading = styles["Heading1"]
-    style_heading.fontName = 'Vazir'
+#     # Define styles with the Persian font
+#     styles = getSampleStyleSheet()
+#     style_heading = styles["Heading1"]
+#     style_heading.fontName = "Vazir"
 
-    # Invoice header
-    data.append(['فاکتور', ''])
-    data.append(['شماره سفارش:', order.code])
-    data.append(['تاریخ ثبت سفارش:', order.registered_date.strftime('%Y/%m/%d %H:%M')])
-    data.append(['', ''])
-    data.append(['اطلاعات مشتری', ''])
-    data.append(['نام:', order.user.get_full_name()])
-    data.append(['تلفن:', order.phone])
-    data.append(['', ''])
-    data.append(['آیتم‌های سفارش', ''])
-    data.append(['نام محصول', 'تعداد', 'قیمت (تومان)'])
-    for item in items:
-        data.append([item.title, str(item.count), str(item.price)])
+#     # Invoice header
+#     data.append(["فاکتور", ""])
+#     data.append(["شماره سفارش:", order.code])
+#     data.append(["تاریخ ثبت سفارش:", order.registered_date.strftime("%Y/%m/%d %H:%M")])
+#     data.append(["", ""])
+#     data.append(["اطلاعات مشتری", ""])
+#     data.append(["نام:", order.user.get_full_name()])
+#     data.append(["تلفن:", order.phone])
+#     data.append(["", ""])
+#     data.append(["آیتم‌های سفارش", ""])
+#     data.append(["نام محصول", "تعداد", "قیمت (تومان)"])
+#     for item in items:
+#         data.append([item.title, str(item.count), str(item.price)])
 
-    # Calculate total price
-    total_price = order.total_price
-    data.append(['', '', 'مجموع قیمت:'])
-    data.append(['', '', str(total_price)])
+#     # Calculate total price
+#     total_price = order.total_price
+#     data.append(["", "", "مجموع قیمت:"])
+#     data.append(["", "", str(total_price)])
 
-    # Create table
-    table = Table(data, colWidths=(200, 100, 100))
-    table.setStyle(TableStyle([('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
-                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-                               ('FONTNAME', (0, 0), (-1, -1), 'Vazir'),
-                               ('BOTTOMPADDING', (0, 0), (-1, -1), 12),
-                               ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
-                               ('GRID', (0, 0), (-1, -1), 1, colors.black)]))
+#     # Create table
+#     table = Table(data, colWidths=(200, 100, 100))
+#     table.setStyle(
+#         TableStyle(
+#             [
+#                 ("TEXTCOLOR", (0, 0), (-1, -1), colors.black),
+#                 ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+#                 ("FONTNAME", (0, 0), (-1, -1), "Vazir"),
+#                 ("BOTTOMPADDING", (0, 0), (-1, -1), 12),
+#                 ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
+#                 ("GRID", (0, 0), (-1, -1), 1, colors.black),
+#             ]
+#         )
+#     )
 
-    # Add table to PDF
-    pdf.build([table])
+#     # Add table to PDF
+#     pdf.build([table])
 
-    # Return PDF as HTTP response
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'attachment; filename="invoice_{order.id}.pdf"'
-    response.write(buffer.getvalue())
-    buffer.close()
-    return response
+#     # Return PDF as HTTP response
+#     response = HttpResponse(content_type="application/pdf")
+#     response["Content-Disposition"] = f'attachment; filename="invoice_{order.id}.pdf"'
+#     response.write(buffer.getvalue())
+#     buffer.close()
+#     return response
+
+
+class FavoriteProductListCreateView(generics.ListCreateAPIView):
+    queryset = models.FavoriteProduct.objects.all()
+    serializer_class = serializers.FavoriteProductSerializer
+    authentication_classes = (authentication.TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return serializers.CreateFavoriteProductSerializer
+        else:
+            return self.serializer_class
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)

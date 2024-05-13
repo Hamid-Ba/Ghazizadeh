@@ -66,15 +66,21 @@ class CreateTicketAPI(generics.CreateAPIView):
     serializer_class = serializers.TicketSerializer
 
 
-class FAQCategoryViewSet(mixins.RetrieveModelMixin,
-                          mixins.ListModelMixin,
-                          viewsets.GenericViewSet):
+class FAQCategoryViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
     queryset = models.FAQCategory.objects.all()
     serializer_class = serializers.FAQCategorySerializer
-    
 
-class FAQViewSet(mixins.RetrieveModelMixin,
-                          mixins.ListModelMixin,
-                          viewsets.GenericViewSet):
+
+class FAQViewSet(
+    mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
+):
     queryset = models.FAQ.objects.all()
     serializer_class = serializers.FAQSerializer
+    pagination_class = pagination.StandardPagination
+
+
+class EmailAndPhoneAPI(generics.RetrieveAPIView):
+    queryset = models.EmailAndPhone.objects.all()
+    serializer_class = serializers.EmailAndPhoneSerializer

@@ -65,12 +65,33 @@ class SliderAndBannerAdmin(admin.ModelAdmin):
 
 
 class FAQCategoryAdmin(admin.ModelAdmin):
-    list_display = ('title',)
+    list_display = (
+        "id",
+        "title",
+    )
+    list_display_links = (
+        "id",
+        "title",
+    )
 
 
 class FAQAdmin(admin.ModelAdmin):
-    list_display = ('question', 'category',)
-    list_filter = ('category',)
+    list_display = (
+        "id",
+        "question",
+        "category",
+    )
+    list_display_links = (
+        "id",
+        "question",
+    )
+    list_filter = ("category",)
+
+
+class EmailAndPhoneAdmin(admin.ModelAdmin):
+    list_display = ("email1", "email2", "phone1", "phone2")
+    list_display_links = ("email1", "email2", "phone1", "phone2")
+    list_editable = ("email1", "email2", "phone1", "phone2")
 
 
 admin.site.register(models.Ticket)

@@ -1,6 +1,4 @@
-from django.urls import (
-    path, include
-)
+from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 
 from siteinfo import views
@@ -23,4 +21,5 @@ urlpatterns = [
         name="slider_and_banner",
     ),
     path("ticket/", views.CreateTicketAPI.as_view(), name="create_ticket"),
+    path("email_phone/", views.EmailAndPhoneAPI.as_view(), name="email_phone"),
 ]

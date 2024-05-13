@@ -7,6 +7,8 @@ from django.contrib.auth.models import (
     PermissionsMixin,
     BaseUserManager,
 )
+from django.utils.translation import gettext_lazy as _
+
 
 from django.core.validators import validate_email
 from account.vaidators import phone_validator
@@ -39,13 +41,13 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     """Custom User Model"""
 
-    phone = models.CharField(max_length=11, unique=True, validators=[phone_validator])
-    first_name = models.CharField(max_length=72, blank=True)
-    last_name = models.CharField(max_length=100, blank=True)
-    email = models.EmailField(max_length=255, validators=[validate_email], blank=True)
-    national_code = models.CharField(max_length=10, blank=True, null=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
+    phone = models.CharField(max_length=11, unique=True, validators=[phone_validator], verbose_name="موبایل")
+    first_name = models.CharField(max_length=72, blank=True, verbose_name="نام")
+    last_name = models.CharField(max_length=100, blank=True, verbose_name="نام خانوادگی")
+    email = models.EmailField(max_length=255, validators=[validate_email], blank=True, verbose_name="پست الکترونیک")
+    national_code = models.CharField(max_length=10, blank=True, null=True, verbose_name="کد ملی")
+    is_active = models.BooleanField(default=True, verbose_name="حساب فعال باشد ؟")
+    is_staff = models.BooleanField(default=False, verbose_name="به پنل مدیریت دسترسی داشته باشد ؟")
 
     USERNAME_FIELD = "phone"
 
@@ -55,6 +57,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.first_name and self.last_name:
             return f"{self.first_name} {self.last_name}"
         return self.phone
-    
+
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+    
+    class Meta:
+        verbose_name = _('کاربر')
+        verbose_name_plural = _('کاربران')
